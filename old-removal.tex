@@ -1,0 +1,162 @@
+%\subsection{Experiments}
+
+% As shown in the previous section, forgotten events allow to define examples in a meaningful way regarding their influence on training.
+As shown in the previous section, learning on examples that have been forgotten at least once  minimally impacts performance on those that are unforgettable.
+In particular, \alex{why aligned ? we're not aligned with these guys, they usually train on easy examples first} aligned with a large body of work on re-weighting training examples \citep{Bengio+chapter2007,Kumar10,Fan2017,screenerNet,Zhao2015,conf/icml/KatharopoulosF18}, we conjecture that unforgettable examples are less informative than others, and more generally that the more an example is forgotten during training, the more useful it is to the classification task. 
+To test the hypothesis, we go one step beyond previous studies and completely remove a given subset of examples during training. 
+
+We perform two types of experiments. \alex{I think that the first set of the experiments isn't necessary because it is essentially the speed at which the performance drops in the second set, right?} In the first set of experiments, we remove a fixed number of points $n$ from the data set, based on the number of times they have been been forgotten, \textit{e.g.} remove $n$ examples between positions $m$ and $m+n$ in the ordered data set (see Section~\ref{subsec:definition} for a definition of the ordering). We then train a classifier on each reduced data set, and track its generalization performance. For the second set of experiments, we remove an increasingly large fraction of the least forgotten examples from the data set, train on that data set, and measure performance on the test set. As a baseline, we also train classifiers on data sets where random subsets of examples have been removed.
+
+\subsection{Results}
+
+% \begin{table*}[ht]
+% \caption{Results of BERT model trained on different sources of training examples. We denote with $\Delta$ the absolute improvement with respect to the standard setting of fine-tuning on all the MNLI examples (first row). Lines from 2 to 5 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 6 to 9) corresponds to first finetuning BERT on all the MNLI data and then performing an additional stage of finetuning on selected examples. We also compare the performance to the recent baseline of~\cite{clark2019dont} (lines 10 to 12). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms their best result.}
+% \small
+% \label{tab:twoclass}
+% \centering
+% \begin{tabular}{llcccc}
+% \toprule
+% & Train examples & HANS & MNLI & $\Delta^\textrm{all}_\textrm{hans}$ & $\Delta^\textrm{all}_\textrm{MNLI}$ \\
+% \midrule
+% \small{1} & All & 58.3 & 84.5 & - & -            \\
+% \midrule
+% \small{2} & BERT forgettables $_{32,079}$   & 48.0 & 23.1 & -10.3 & -61.4 \\
+% \small{3} & \hspace{0.1cm} Random $_{32,079}$ & 50.7 & 78.1 & -7.6 & -6.4 \\
+% \small{4} & BiLSTM forgettables $_{78,893}$ & 54.4 & 67.7 & -3.9  & -16.8 \\
+% \small{5} & BoW forgettables $_{110,733}$   & 58.3 & 73.3 & 0     & -11.2 \\
+% \midrule
+% &\emph{Additional stage of finetuning} \\
+% \small{6} & All + finetuning on BERT forgettables   & 67.3 & 82.3 & +9.0 & -2.2 \\
+% \small{7} & All + finetuning on BiLSTM forgettables & \underline{71.5} & 83.4 & \underline{+13.2} & -1.1 \\
+% \small{7+} & All + finetuning on balanced BiLSTM forgettables & \underline{74.0} & 82.5 & \underline{+15.5} & -2.0 \\
+% \small{7+} & All + finetuning on BiLSTM+Att forgettables & \underline{72.5} & 83.2 & \underline{+14.2} & -1.3 \\
+% \small{7+} & All + finetuning on balanced BiLSTM+Att forgettables & \underline{73.8} & 82.8 & \underline{+15.3} & -1.7 \\
+% \small{8} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$       & 61.9 & 83.9 & +3.6 & -0.6 \\
+% \small{9} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (same class-balance)      & 58.4 & 84.5 &  &  \\
+% \small{10} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (10\% entailment)     & 67.6 & 81.8 &  &  \\
+% \small{11} & All + finetuning on BoW forgettables    & 69.1 & 83.5 & +10.2 & \underline{-1.0} \\
+% \midrule
+% &\emph{From~\cite{clark2019dont}} & & & & \\
+% \small{12} & All & 62.4 & 84.2 & +4.1 & -0.3 \\
+% \small{13} & All (reweight) & 69.2 & 83.5 & +9.9 & -1.0 \\
+% \small{14} & Learned Mixin & 64.0 & 84.3 & +1.6 & +0.1 \\
+% \bottomrule
+% \end{tabular}
+% \end{table*}
+
+
+
+In Figure \ref{fig:remove_5000_sweep}, the results of our first set of experiments on CIFAR-10 are shown, in the case where $n = 5000$ examples are removed from the data set. We plot the accuracy of the classifiers on the test set against the average number of forgetting events of the removed examples. As can be seen, removing the same number of examples with increasingly more forgetting events results in worse generalization for most of the curve. It is worth noting that the distribution of forgetting events (Figure \ref{fig:distributions}) is very skewed towards small numbers of events, an average number of $5$ corresponds approximately to the middle of the ordered data set, while the utmost right point of the curve corresponds to removing the most forgotten examples. It is interesting to notice the right part of the curve moving up, this suggests that some of the most forgotten examples actually hurt performance, those can correspond to outliers and/or mislabeled examples. Finding a way to separate those points from very informative ones is an ancient but still active area of research~\citep{john1995robust,jiang18mentor}.
+
+%\begin{figure}[h]
+%    \begin{center}
+%    \includegraphics[width=0.5\textwidth]{./figures/removed_5k_cifar.pdf}
+%    \end{center}
+%    \caption{Generalization performance of ResNet18 trained on CIFAR-10 training set with $5000$ examples removed. Performance is maintained only when the removed examples have few forgetting events.\alex{I think we should remove this figure}}
+%    \label{fig:remove_5000_sweep}
+%\end{figure}
+
+The results of our second set of experiments are shown for CIFAR-10 on Figure \ref{fig:remove_subsets_cifar} where the generalization performance is plotted against the percentage of the training set that was removed. When removing a random subset of the data set, we see a rapid decrease in performance. Comparatively, choosing subsets in a principled forgetting events-based way, yields an interesting fact. Up to $20\%$ of the data set can be removed while maintaining comparable generalization performance with a classifier trained on the full data set, and up to $35\%$ can be removed with marginal degradation (less than $0.2\%$). The results on the other data sets are similar, a large fraction of training examples can be removed without hurting the final generalization performance of the classifiers (Figure ~\ref{fig:removed_subsets}).
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=0.49\textwidth]{./figures/CIFAR10_remove_subsets_resnet.pdf}
+    \includegraphics[width=0.5\textwidth]{./figures/removed_5k_cifar.pdf}
+%    \includegraphics[width=0.49\textwidth]{./figures/CIFAR10_remove_subsets_wideresnet.pdf}
+    \end{center}
+    \caption{(left) Generalization performance on CIFAR-10 of ResNet18 (\textit{Left}) and WideResNet (\textit{Right}) when increasingly larger subsets of the training set are removed (mean +/- std error of $5$ seeds). When the removed examples are selected at random, performance drops significantly after removing as little as $10\%$ of the training set. In contrast, selecting the examples according to our tuning-free criterion can reduce the training set by $30\%$ without significantly affecting generalization. (right) Difference in generalization performance when contiguous chunks of 5000 increasingly forgotten examples are removed from the training set. Most important examples are those that are forgotten the most.}
+    \label{fig:remove_subsets_cifar}
+\end{figure}
+
+%\begin{figure}[h]
+%    \begin{center}
+%    \includegraphics[width=0.49\textwidth]{./figures/CIFAR10_remove_subsets_resnet.pdf}
+%    \includegraphics[width=0.49\textwidth]{./figures/CIFAR10_remove_subsets_wideresnet.pdf}
+%    \end{center}
+%    \caption{Generalization performance on CIFAR-10 of ResNet18 (\textit{Left}) and WideResNet (\textit{Right}) when increasingly larger subsets of the training set are removed (mean +/- std error of $5$ seeds). When the removed examples are selected at random, performance drops significantly after removing as little as $10\%$ of the training set. In contrast, selecting the examples according to our tuning-free criterion can reduce the training set by $25\%$ without affecting generalization.}
+%    \label{fig:remove_subsets_cifar}
+%\end{figure}
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=0.49\textwidth]{./figures/removed_nk_all_datasets.pdf}
+    \includegraphics[width=0.49\textwidth]{./figures/removed_nk_all_datasets_ylim_5.pdf}
+    \end{center}
+    \caption{Decreases in generalization performance when fractions of the training sets are removed. When the subsets to remove are selected appropriately, generalization performance is maintained after removing up to $30\%$ of \emph{CIFAR-10}, $50\%$ of \emph{permutedMNIST}, and $80\%$ of \emph{MNIST}.}
+    \label{fig:removed_subsets}
+\end{figure}
+
+
+% \begin{figure}[h]
+%     \begin{center}
+%     \includegraphics[width=0.8\textwidth]{./figures/CIFAR10_remove_subsets_wideresnet.pdf}
+%     \end{center}
+%     \caption{Generalization performance of WideResNet on CIFAR-10 when increasingly larger subsets of the training set are removed (mean +/- std error of $5$ seeds). When the removed examples are selected at random, performance drops significantly after removing as little as $10\%$ of the training set. In contrast, selecting the examples according to our tuning-free criterion can reduce the training set by $25\%$ without affecting generalization.}
+%     \label{fig:remove_subsets_wideresnet}
+% \end{figure}
+
+
+\subsection{Interpretation}
+
+\textbf{Support vectors} The \textit{implicit generalization} of deep neural networks \citep{zhang2016understanding} is a phenomenon still poorly understood. Various explanations have been offered: flat minima generalize better and stochastic gradient descent converges towards them \citep{flatminima,kleinbergSGD}, gradient descent protects against overfitting \citep{Advani2017HighdimensionalDO,dynamics}, deep networks structure biases learning towards simpler functions \citep{implicit_bias,function_map}. But none of them is fully convincing. One interesting direction of research is to study the convergence properties of gradient descent in terms of support vectors and maximum margin classifiers. It has been shown recently \citep{Soudry2017} that on separable data, a linear network trained using the cross-entropy loss will converge to such a maximum margin classifier. This supports the idea that stochastic gradient descent implicitly converges to solution that maximally separate the data set, and additionally, that some data points are more relevant than others to the decision boundary learnt by the classifier. Those points play a part equivalent to support vectors in the \textit{support vector machine} paradigm.
+
+Our results seem to confirm that certain data points have indeed little to no influence on the classifier learnt via stochastic gradient descent. The rest of the data set is comprised of analogs to \textit{support vectors}, important for the generalization performance of the model. As mentioned before, the data sets we study have various fractions of unforgettable events ($91.7\%$ for \emph{MNIST}, $75.3\%$ for \emph{permutedMNIST} and  $31.3\%$ for \emph{CIFAR-10}). We also see in Figure \ref{fig:removed_subsets} that performance on those data sets starts to degrade at different percentages of removed examples: the number of support vectors varies from one data set to the other, based on the complexity of the underlying data distribution.
+
+\textbf{Intrinsic data set dimension} This last statement can be put in perspective with the intrinsic data set dimension defined by \citet{intrinsic} as the codimension in the parameter space of the solution set: the higher the intrinsic data set dimension, the larger the number of support vectors, and the fewer the number of unforgettable examples.
+
+\remi{add something about fluctuations of the decision boundary causing support vectors to move from the correct class to wrong classes}
+
+\iffalse
+\begin{table}[h]
+    \caption{Results of BERT model trained on different sources of training. }
+    \label{tab:twoclass}
+    \centering
+    \begin{tabular}{l | l l}
+        Train source & HANS & MNLI \\
+        \hline
+        All & 60.0 & 90.6\\
+        \hline
+        BERT unforgettables & & 90.1 \\
+        BERT 20\% unforgettables & & 87.8 \\
+        BERT forgettables + 20\% unforgettables & & 87.4 \\
+        BERT forgettables (swapped labels) + 20\% unforgettables & & 87.1 \\
+        BERT forgettables & 48.7 & 25.7 \\
+        BiLSTM forgettables                       & 54.0 & 75.8 \\
+        BOW forgettables                        & 60.7 & 80.1 \\
+        BiLSTM forgettables + 20\% unforgettables & 57.5 & \\
+        BiLSTM forgettables + 30\% unforgettables & 57.5 & \\
+        BiLSTM forgettables + 50\% unforgettables & 57.5 & \\
+        BiLSTM forgettables + 80\% unforgettables & 57.5 & \\
+        \hline 
+        pretrian all, fine-tune on BERT forgettables & 67.8 & \\
+        pretrian all, fine-tune on BiLSTM forgettables & 69.2 & 89.2 \\
+        pretrian all, fine-tune on BOW forgettables & \textbf{70.8} & 89.1\\
+        \hline 
+        pretrian all, fine-tune on BiLSTM 20\% unforgettables & 61.7 & \\
+        pretrian all, fine-tune on all & 63.8 & \\
+        \hline 
+        All \citep{clark2019dont} & 62.4 & \\
+        All Reweight \citep{clark2019dont} & 69.2 \\
+        
+    \end{tabular}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l | l l}
+        Train source & HANS & MNLI \\
+        \hline
+        All &  & \\
+        \hline
+        pretrian all, fine-tune on BOW-BiDAF forgettables & 69.9 & 79.9\\
+        pretrian all, fine-tune on BOW forgettables & \\
+        \hline 
+        All \citep{clark2019dont} & 62.4 & \\
+        All Reweight \citep{clark2019dont} & 69.2 \\
+        
+    \end{tabular}
+    \caption{Using the \cite{clark2019dont} code to train the model, with 3 classes MNLI. }
+    \label{tab:threeclass}
+\end{table}
+\fi

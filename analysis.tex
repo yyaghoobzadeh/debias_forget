@@ -1,0 +1,47 @@
+\subsection{Properties of the forgettables}
+Based on the results, we have:
+
+\begin{itemize}
+    \item A subset of training examples for a specific model 
+     in a specific training setting
+     \item The model either learns and then forget them during training at least once, or never leans them.
+     \item If we start from a (particaially) randomly initialized model and train it only on the forgettables, the model does not generalize; in fact it performs worse than chance on the test examples.
+    \item If we start from a pretrained model for the task, and finetune it on
+    the forgettables, the model does better on HANS and worse on original test set.
+    \item It is better if we pick the set of forgettables from a model with weaker architecture.
+    \item Only around 50\% of BERT forgettables are forgettable by BiLSTM -- again showing that forgettables are model dependent. 
+    
+\end{itemize}
+
+Some other hypothesis:
+\begin{itemize}
+    \item X is in F if there is a training example with different label but similar input feature. This is in fact
+    similarly true for HANS examples: there are non-entailment examples with high word overlap, while there are many 
+    examples in training set of MNLI with close input feature but entailment as label.
+    \item the easy rules in U do not generalize to F or F is a set of outliers -- model does not learn a rule from them. 
+    This is hypothesized by the poor results of models trained only on their Fs. However, eliminating these outliers hurt the model
+    performance. 
+    
+\end{itemize}
+
+\iffalse
+\subsection{Nearest neighbors}
+We take the embedding of CLS in BERT as the representation of an example. 
+In BERT models, this embedding is fed to a linear classifier and optimized by cross entropy loss. 
+Here, we find and look into the k-NNs of training examples for understanding what model is actually learning. 
+\fi
+
+
+\subsection{Remaining questions}
+\begin{enumerate}
+    \item How do our experiments align with the main findings of \newcite{toneva2018empirical} about
+    forgettable and unforgettable examples in some image classifcation datasets:
+    \begin{quote}
+        a) there exist a large number of unforgettable examples, i.e.,
+examples that are never forgotten once learnt, those examples are stable across seeds and strongly
+correlated from one neural architecture to another; b) examples with noisy labels are among the most
+forgotten examples, along with images with “uncommon” features, visually complicated to classify;
+c) training a neural network on a dataset where a very large fraction of the least forgotten examples
+have been removed still results in extremely competitive performance on the test set
+    \end{quote}
+\end{enumerate}

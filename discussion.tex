@@ -1,0 +1,34 @@
+
+In this paper, we introduced a novel approach based on example forgetting to build more robust NLU models.
+We put more weight on a set of forgettable examples by finetuning
+an already pretrained model only on those.
+We investigate different selections of the forgettable examples.
+
+We evaluated our approach on natural language inference task using  MNLI dataset and the evaluation set of HANS.
+HANS is designed to test the robustness of MNLI trained models 
+against some simple heuristics.
+Our experiments showed promising results. In particular, we improved the BERT performance
+on HANS dataset by more than 13\% absolute accuracy points.
+
+In future, we plan to extend this research in different directions.
+First, we want to analyze the forgetting examples more to understand their special properties.
+Second, to confirm the generalization of our approach, we will apply it on more NLU tasks.
+Finally, we will study more smooth reweighting of training examples.
+
+
+
+
+
+
+
+
+
+
+
+
+% \item investigate differences between hard examples and most forgotten examples 
+%     \item smoothly integrate the finetuning phase by softly reweighting examples
+%     \item compute more explicit measures of correlation between forgettables and the biases
+%     \item understand why BERT forgettables suck.
+%     \item can we even learn to avoid biases if no example contain counter examples of those biases ? put this in discussion
+% \end{itemize}
