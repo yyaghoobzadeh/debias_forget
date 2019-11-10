@@ -39,5 +39,89 @@ All + finetuning on BiLSTM forgettables & 74.0
 \caption{Accuracy of the entailment (\ent) and non-entailment (\nent) classes on HANS for three heuristics:
     lexical overlap (lexical), subsequence overlap (subseq), and constituent overlap (const).
 }
-\label{tab:hans}
+\label{tab:hans-detailed}
+\end{table*}
+
+
+\begin{table*}[]
+\begin{tabular}{p{0.45\textwidth} p{0.45\textwidth} }
+\\
+\multicolumn{2}{l}{\emph{The HANS example}}
+\\
+\toprule
+\multicolumn{2}{l}{
+\begin{tabular}[c]{@{}l@{}}
+\emph{The banker thanked the tourist.} $\longarrownot\longrightarrow$ \emph{The tourist thanked the banker.} \\
+\end{tabular}
+}
+\\
+\toprule
+\multicolumn{1}{c}{\textbf{Nearest neighbors of BERT (MNLI)}}
+& \multicolumn{1}{c}{\textbf{Nearest neighbors of our Robust BERT}}     \\
+\midrule
+\begin{tabular}[t]{@{}p{0.45\textwidth}@{}}
+\emph{The model simulates the size of the pool of exchangeable base cations in the soil.} $\longrightarrow$ \emph{The model simulates the size of the pool of base cations in the dirt.} \\
+% \\ \emph{Label}: \ent
+\end{tabular} & 
+\begin{tabular}[t]{@{}p{0.45\textwidth}@{}}
+\emph{He sat patiently as she talked}. $\longarrownot\longrightarrow$
+\emph{She sat patiently as he spoke}
+\end{tabular}
+
+\\
+% \cmidrule(lr){2-2}
+\midrule
+\begin{tabular}[c]{@{}p{0.45\textwidth}@{}}
+P:	(Or click to read my summary of Wolfe's and Rose's positions.)
+H:	To read my summary of Wolfe's position, click.
+label: \ent
+\end{tabular}
+&
+\begin{tabular}[c]{@{}p{0.45\textwidth}@{}}
+\emph{And Gates and Appiah would have to be thanked for opening the door.} $\longarrownot\longrightarrow$
+\emph{Gates and Appiah were thanked for opening the door.} \\
+\end{tabular}
+\\
+\end{tabular}
+\caption{Two nearest neighbors for one HANS non-entailment (\nent{})  example show-casing how our robust model (line 5 in Table 2) pushes supporting \nent{} training data closer compared to standard BERT (MNLI). 
+To compute nearest neighbors from the BERT models, the embedding 
+of the special token (CLS) is assumed as the representation of
+an example and cosine is used as the similarity metric.}
+\label{tab:NNs}
+\end{table*}
+
+
+\begin{table*}[]
+\begin{tabular}{p{\textwidth}}
+\toprule
+\emph{The banker thanked the tourist.} $\longarrownot\longrightarrow$ \emph{The tourist thanked the banker.} \\
+\\
+\textbf{Nearest neighbors of BERT (MNLI)}}
+\emph{The model simulates the size of the pool of exchangeable base cations in the soil.} $\longrightarrow$ \emph{The model simulates the size of the pool of base cations in the dirt.} \\
+% \\ \emph{Label}: \ent
+\begin{tabular}[t]{@{}p{0.45\textwidth}@{}}
+\emph{He sat patiently as she talked}. $\longarrownot\longrightarrow$
+\emph{She sat patiently as he spoke}
+\end{tabular}
+
+\\
+% \cmidrule(lr){2-2}
+\midrule
+\begin{tabular}[c]{@{}p{0.45\textwidth}@{}}
+P:	(Or click to read my summary of Wolfe's and Rose's positions.)
+H:	To read my summary of Wolfe's position, click.
+label: \ent
+\end{tabular}
+&
+\begin{tabular}[c]{@{}p{0.45\textwidth}@{}}
+\emph{And Gates and Appiah would have to be thanked for opening the door.} $\longarrownot\longrightarrow$
+\emph{Gates and Appiah were thanked for opening the door.} \\
+\end{tabular}
+\\
+\end{tabular}
+\caption{Two nearest neighbors for one HANS non-entailment (\nent{})  example show-casing how our robust model (line 5 in Table 2) pushes supporting \nent{} training data closer compared to standard BERT (MNLI). 
+To compute nearest neighbors from the BERT models, the embedding 
+of the special token (CLS) is assumed as the representation of
+an example and cosine is used as the similarity metric.}
+\label{tab:NNs}
 \end{table*}

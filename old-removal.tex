@@ -9,40 +9,40 @@ We perform two types of experiments. \alex{I think that the first set of the exp
 
 \subsection{Results}
 
-% \begin{table*}[ht]
-% \caption{Results of BERT model trained on different sources of training examples. We denote with $\Delta$ the absolute improvement with respect to the standard setting of fine-tuning on all the MNLI examples (first row). Lines from 2 to 5 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 6 to 9) corresponds to first finetuning BERT on all the MNLI data and then performing an additional stage of finetuning on selected examples. We also compare the performance to the recent baseline of~\cite{clark2019dont} (lines 10 to 12). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms their best result.}
-% \small
-% \label{tab:twoclass}
-% \centering
-% \begin{tabular}{llcccc}
-% \toprule
-% & Train examples & HANS & MNLI & $\Delta^\textrm{all}_\textrm{hans}$ & $\Delta^\textrm{all}_\textrm{MNLI}$ \\
-% \midrule
-% \small{1} & All & 58.3 & 84.5 & - & -            \\
-% \midrule
-% \small{2} & BERT forgettables $_{32,079}$   & 48.0 & 23.1 & -10.3 & -61.4 \\
-% \small{3} & \hspace{0.1cm} Random $_{32,079}$ & 50.7 & 78.1 & -7.6 & -6.4 \\
-% \small{4} & BiLSTM forgettables $_{78,893}$ & 54.4 & 67.7 & -3.9  & -16.8 \\
-% \small{5} & BoW forgettables $_{110,733}$   & 58.3 & 73.3 & 0     & -11.2 \\
-% \midrule
-% &\emph{Additional stage of finetuning} \\
-% \small{6} & All + finetuning on BERT forgettables   & 67.3 & 82.3 & +9.0 & -2.2 \\
-% \small{7} & All + finetuning on BiLSTM forgettables & \underline{71.5} & 83.4 & \underline{+13.2} & -1.1 \\
-% \small{7+} & All + finetuning on balanced BiLSTM forgettables & \underline{74.0} & 82.5 & \underline{+15.5} & -2.0 \\
-% \small{7+} & All + finetuning on BiLSTM+Att forgettables & \underline{72.5} & 83.2 & \underline{+14.2} & -1.3 \\
-% \small{7+} & All + finetuning on balanced BiLSTM+Att forgettables & \underline{73.8} & 82.8 & \underline{+15.3} & -1.7 \\
-% \small{8} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$       & 61.9 & 83.9 & +3.6 & -0.6 \\
-% \small{9} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (same class-balance)      & 58.4 & 84.5 &  &  \\
-% \small{10} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (10\% entailment)     & 67.6 & 81.8 &  &  \\
-% \small{11} & All + finetuning on BoW forgettables    & 69.1 & 83.5 & +10.2 & \underline{-1.0} \\
-% \midrule
-% &\emph{From~\cite{clark2019dont}} & & & & \\
-% \small{12} & All & 62.4 & 84.2 & +4.1 & -0.3 \\
-% \small{13} & All (reweight) & 69.2 & 83.5 & +9.9 & -1.0 \\
-% \small{14} & Learned Mixin & 64.0 & 84.3 & +1.6 & +0.1 \\
-% \bottomrule
-% \end{tabular}
-% \end{table*}
+\begin{table*}[ht]
+\caption{Results of BERT model trained on different sources of training examples. We denote with $\Delta$ the absolute improvement with respect to the standard setting of fine-tuning on all the MNLI examples (first row). Lines from 2 to 5 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 6 to 9) corresponds to first finetuning BERT on all the MNLI data and then performing an additional stage of finetuning on selected examples. We also compare the performance to the recent baseline of~\cite{clark2019dont} (lines 10 to 12). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms their best result.}
+\small
+\label{tab:twoclass}
+\centering
+\begin{tabular}{llcccc}
+\toprule
+& Train examples & HANS & MNLI & $\Delta^\textrm{all}_\textrm{hans}$ & $\Delta^\textrm{all}_\textrm{MNLI}$ \\
+\midrule
+\small{1} & All & 58.3 & 84.5 & - & -            \\
+\midrule
+\small{2} & BERT forgettables $_{32,079}$   & 48.0 & 23.1 & -10.3 & -61.4 \\
+\small{3} & \hspace{0.1cm} Random $_{32,079}$ & 50.7 & 78.1 & -7.6 & -6.4 \\
+\small{4} & BiLSTM forgettables $_{78,893}$ & 54.4 & 67.7 & -3.9  & -16.8 \\
+\small{5} & BoW forgettables $_{110,733}$   & 58.3 & 73.3 & 0     & -11.2 \\
+\midrule
+&\emph{Additional stage of finetuning} \\
+\small{6} & All + finetuning on BERT forgettables   & 67.3 & 82.3 & +9.0 & -2.2 \\
+\small{7} & All + finetuning on BiLSTM forgettables & \underline{71.5} & 83.4 & \underline{+13.2} & -1.1 \\
+\small{7+} & All + finetuning on balanced BiLSTM forgettables & \underline{74.0} & 82.5 & \underline{+15.5} & -2.0 \\
+\small{7+} & All + finetuning on BiLSTM+Att forgettables & \underline{72.5} & 83.2 & \underline{+14.2} & -1.3 \\
+\small{7+} & All + finetuning on balanced BiLSTM+Att forgettables & \underline{73.8} & 82.8 & \underline{+15.3} & -1.7 \\
+\small{8} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$       & 61.9 & 83.9 & +3.6 & -0.6 \\
+\small{9} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (same class-balance)      & 58.4 & 84.5 &  &  \\
+\small{10} & \hspace{0.1cm} All + finetuning on Random $_{78,893}$ (10\% entailment)     & 67.6 & 81.8 &  &  \\
+\small{11} & All + finetuning on BoW forgettables    & 69.1 & 83.5 & +10.2 & \underline{-1.0} \\
+\midrule
+&\emph{From~\cite{clark2019dont}} & & & & \\
+\small{12} & All & 62.4 & 84.2 & +4.1 & -0.3 \\
+\small{13} & All (reweight) & 69.2 & 83.5 & +9.9 & -1.0 \\
+\small{14} & Learned Mixin & 64.0 & 84.3 & +1.6 & +0.1 \\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 
 
@@ -160,3 +160,48 @@ Our results seem to confirm that certain data points have indeed little to no in
     \label{tab:threeclass}
 \end{table}
 \fi
+
+
+
+\begin{table*}[]
+\small
+\begin{tabular}{p{0.4\textwidth} | p{0.45\textwidth}}
+\multicolumn{1}{p{0.3\textwidth}}{\textbf{HANS example}}
+& \textbf{Nearest neighbors in MNLI training examples}     
+\\
+\toprule
+\multirow{2}{*}{
+\begin{tabular}[p{0.3\textwidth}]{@{}l@{}}
+\emph{Heuristic: Lexical overlap}\\\\
+P:The president advised the doctor .
+\\ H:The doctor advised the president .
+\\ label: \ent \end{tabular}}
+& \begin{tabular}[c]{@{}p{0.4\textwidth}@{}}P: Those, said the Astronomer.\\ 
+H: Those, said the Astronomer.\\ label: \ent\end{tabular}\\
+\cmidrule(lr){2-2}
+&
+\begin{tabular}[c]{@{}p{0.4\textwidth}@{}}P: The Industrialist turned to the Astronomer.\\ H: The Astronomer turned to the Industrialist.\\ label: \nent\end{tabular}\\
+% \midrule
+% \multirow{2}{*}{\begin{tabular}[c]{@{}p{0.4\textwidth}@{}}
+% \emph{Heuristic: Subsequence}\\ \\ P: The manager knew the tourists supported the author .\\ H: The manager knew the tourists .\\ label: \nent\end{tabular}}
+% & \begin{tabular}[c]{@{}p{0.45\textwidth}@{}}P:Exactly. Madame Colombier's in the Avenue de Neuilly. \\ Tuppence knew the name well.\\ H:Tuppence knew that Madame Colombier's was in the Avenue de Neuilly.\\ label: \ent\end{tabular}
+% \\ 
+% \cmidrule(lr){2-2}
+% & \begin{tabular}[c]{@{}p{0.45\textwidth}@{}}P: Somehow, he knew I'd understand.\\ H: He knew I would understand.\\ label: \ent
+% \end{tabular}\\
+% \midrule
+% \multirow{2}{*}{
+% \begin{tabular}[c]{@{}p{0.4\textwidth}@{}}
+% \emph{Heuristic: Constituent}\\ \\ P: In case the doctors stopped the author , the bankers helped the manager .\\ H:The doctors stopped the author .\\ label: \nent
+% \end{tabular}} 
+% & \begin{tabular}[c]{@{}p{0.45\textwidth}@{}}P: It incorporates concepts of power and reduction of barriers and an affirmative duty to address barriers.\\ H: It incorporates power and barrier increase of barriers.\\ label: \nent\end{tabular} \\
+% \cmidrule(lr){2-2}
+% & \begin{tabular}[c]{@{}p{0.45\textwidth}@{}}P: You can visit the Temple Mount from Saturday through Thursday, but on Fridays (the Muslim Sabbath) and on major Islamic holidays, including the entire holy month of Ramadan, the Haram is closed to non-Muslims.\\ H: The Temple Mount is closed to non-Muslims during Ramadan.\\ label: \ent\end{tabular}
+\end{tabular}
+\caption{Two nearest neighbors for three HANS non-entailment (\nent{})  examples representing the three heuristics of Lexical overlap, Subsequence and Consitituent. 
+To compute nearest neighbors from the BERT model trained on MNLI, the embedding 
+of the special token (CLS) is assumed as the representation of
+an example.
+As it is shown, for the Lexical overlap, we do see supporting 
+training examples. }
+\end{table*}

@@ -1,40 +1,57 @@
-
-\subsection{Main result}
-
 \begin{table*}[ht]
-\caption{Results of BERT model trained on different sources of training examples. 
+\caption{Results of \bertbase model trained on different sources of training examples. Line 1 replicates the original \bertbase result~\citep{devlin2018bert}.
 % We denote with $\Delta$ the absolute improvement with respect to the standard setting of fine-tuning on all the MNLI examples (first row). 
-Lines from 2 to 7 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 8 to 11) corresponds to first finetuning BERT on all the MNLI data and then performing an additional stage of finetuning on selected examples. We also compare the performance to the recent baselines of~\cite{clark2019dont} (lines 12 to 14) and \cite{mahabadi2019simple} (line 15). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms their best result.}
+Lines from 2 to 7 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 8 to 11) corresponds to first finetuning \bertbase on the entire MNLI data and then performing an additional finetuning stage on selected examples. We also compare performance to the recent baselines of \newcite{clark2019dont} (lines 12 to 14) and \newcite{mahabadi2019simple} (line 15). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms theirs.}
 \small
 \label{tab:twoclass}
 \centering
-\begin{tabular}{llcccc}
+\begin{tabular}{llccc}
 \toprule
-& Train examples & HANS & MNLI & HANS+MNLI  \\
+& \textbf{Train examples} & \textbf{HANS} & \textbf{MNLI} & \textbf{Avg.}  \\
 \midrule
-\small{1} & All & 58.3 & 84.5 & 64.8        \\
+\small{1} & All & 58.3 & 84.5 & 71.4        \\
 \midrule
-\small{2} & BERT forgettables $_{\balancedbert}$   & 48.8                     & 38.9                         & 46.4\\
-\small{3} & \hspace{0.1cm} Random $_{\balancedbert}$ & 51.9                   & 75.7                         & 57.8\\
-\small{4} & BiLSTM forgettables $_{\balancedlstm}$ & 54.0                     & 66.8                         & 57.2 \\
-\small{5} & \hspace{0.1cm} Random $_{\balancedlstm}$ & 51.1                   & 79.0                         & 58.0\\
-\small{6} & BoW forgettables $_{\balancedbow}$    & 54.1                     & 68.3                         & 57.6 \\
-\small{7} & \hspace{0.1cm} Random $_{\balancedbow}$ & 53.9                   & 79.6                         & 60.2\\
+\small{2} & \bertbase forgettables $_{\balancedbert}$   & 48.8                     & 38.9                         & 43.9\\
+\small{3} & \hspace{0.1cm} Random $_{\balancedbert}$ & 51.9                   & 75.7                         & 63.8\\
+\small{4} & BiLSTM forgettables $_{\balancedlstm}$ & 54.0                     & 66.8                         & 60.4 \\
+\small{5} & \hspace{0.1cm} Random $_{\balancedlstm}$ & 51.1                   & 79.0                         & 65.1\\
+\small{6} & BoW forgettables $_{\balancedbow}$    & 54.1                     & 68.3                         & 61.2 \\
+\small{7} & \hspace{0.1cm} Random $_{\balancedbow}$ & 53.9                   & 79.6                         & 66.8\\
 \midrule
 &\emph{Additional stage of finetuning} \\
-\small{8} & All + finetuning on BERT forgettables   & 70.8                     & 81.8                         & 73.5  \\
-\small{9} & All + finetuning on BiLSTM forgettables &  \underline{74.0}                     & 82.5             & \underline{76.1} \\
-\small{10} & \hspace{0.1cm} All + finetuning on Random $_{\balancedlstm}$       & 60.9                     & 84.4                         & 66.7  \\
-\small{11} & All + finetuning on BoW forgettables    & \underline{73.7}                     & 82.4             & \underline{75.8} \\
+\small{8} & All + finetuning on \bertbase forgettables   & 70.8                     & 81.8                         & 76.3  \\
+\small{9} & All + finetuning on BiLSTM forgettables &  \underline{74.0}                     & 82.5             & \underline{78.3} \\
+\small{10} & \hspace{0.1cm} All + finetuning on Random $_{\balancedlstm}$       & 60.9                     & 84.4                         & 72.7  \\
+\small{11} & All + finetuning on BoW forgettables    & \underline{73.7}                     & 82.4             & \underline{78.1} \\
 \midrule
-&\emph{From~\cite{clark2019dont}} & & & & \\
-\small{12} & All & 62.4 & 84.2 & 67.8 \\
-\small{13} & All (reweight) & 69.2 & 83.5 & 72.7 \\
-\small{14} & Learned Mixin & 64.0 & 84.3 & 69.0\\
-\small{15} & Product of Experts  & 66.5 & 84.0 & 70.8     \\
+&\emph{From~\cite{clark2019dont}} & & & \\
+\small{12} & All & 62.4 & 84.2 & 73.3 \\
+\small{13} & All (reweight) & 69.2 & 83.5 & 76.4 \\
+\small{14} & Learned Mixin & 64.0 & 84.3 & 74.2\\
+\midrule
+&\emph{From~\cite{mahabadi2019simple}} & & &  \\
+\small{15} & Product of Experts & 66.5 & 84.0 & 75.3     \\
 \bottomrule
 \end{tabular}
 \end{table*}
+
+\begin{table}[ht]
+\caption{Results of \bertlarge model trained on different sources of training examples.}
+\small
+\label{tab:bertlarge}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Train examples} & \textbf{HANS} & \textbf{MNLI} & \textbf{Avg.}  \\
+\midrule
+All & 72.3 & 86.4 &  79.3 \\
+\midrule
+\emph{Additional stage of finetuning} & & &\\
+All + BoW forgettables & 77.3 & 85.5 & 81.4 \\
+All + BiLSTM forgettables & \underline{77.5} & \underline{85.5} & \underline{81.5} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \iffalse
 \begin{table*}
@@ -66,19 +83,31 @@ Lines from 2 to 7 correspond to finetuning only on subsets of MNLI data. The thi
 \end{table*}
 \fi
 
-Our main results are presented in Table~\ref{tab:twoclass}. Lines 2 to 5 report results of fine-tuning BERT on different subsets of the MNLI dataset. This setting aligns with the setting presented in~\cite{toneva2018empirical} where the authors show that, in multiple image classification tasks, the same generalization performance can be obtained by training a model initialized randomly on its own forgettable examples. Our results suggest that this behavior may be task and/or architecture dependent: in our setting, training only forgettable examples particularly affects generalization performance on MNLI. The most extreme drop in performance is observed when BERT is only fine-tuned on its own forgettable examples (line 2) achieving an accuracy of 38.9\%. Training on BiLSTM (line 4) or BoW forgettables (line 6) examples causes a lesser drop in accuracy on MNLI although still noticeable. One of the possible reasons of the dramatic performance loss observed in line 2 is that BERT forgettables are significantly less than the counterparts from weaker baselines. 
-In order to rule out this hypothesis, we train on a random subset of examples of the same size (\balancedbert, line 3). These results suggests that there is an intrinsic difficulty in BERT forgettables that deserves to be investigated in the future.
-This is also the case for BiLSTM and BoW forgettables (lines 4 and 6) to some extend comparing to random samples with same size (lines 5 and 7).
+Our main results are presented in Table~\ref{tab:twoclass}.
 
-In the second block of results (lines 8-11) we adopt a different strategy: we first fine-tune BERT on all the MNLI examples in order to get a reasonable prior for the task. We perform then an additional stage of fine-tuning on the subset of forgettable examples from each of the considered models. The results confirm that slightly biasing the model towards hard examples improves robustness at a slight cost in MNLI accuracy. 
-Our best model is obtained by using the BiLSTM forgettable examples (line 9) achieving an accuracy of 74.0 on HANS, 
-which constitute a +15.7 absolute improvement with respect to the base model in line 1 and +4.8 and +7.5 with respect to the concurrent models of \newcite{clark2019dont} and \newcite{mahabadi2019simple}. 
+
+\paragraph{Training on Forgettables} Lines 2 to 5 report results of fine-tuning BERT on different subsets of the MNLI dataset. This setting aligns with the setting presented in~\citet{toneva2018empirical} where the authors show that, in multiple image classification tasks, the same generalization performance can be obtained by training a model initialized randomly on its own forgettable examples. Our results suggest that this behavior may be task and/or architecture dependent: in our setting, training only forgettable examples particularly affects generalization performance on MNLI. The most extreme drop in performance is observed when BERT is only fine-tuned on its own forgettable examples (line 2) achieving an accuracy of 38.9\%. Training on BiLSTM (line 4) or BoW forgettables (line 6) examples causes a lesser drop in accuracy on MNLI although still noticeable. One of the possible reasons of the dramatic performance loss observed in line 2 is that BERT forgettables are significantly fewer than the counterparts from weaker baselines. 
+In order to rule out this hypothesis, we train on a random subset of examples of the same size (\balancedbert, line 3). These results suggest that there is an intrinsic difficulty in BERT forgettables that deserves to be investigated in the future.
+To some extent, this is also the case for BiLSTM and BoW forgettables (lines 4 and 6), when comparing to random samples with the same size (lines 5 and 7).
+
+\paragraph{Additional Fine-Tuning} Lines 8-11 report the results obtained by fine-tuning a pretrained model on the set of forgettables, as described in Section 2.4. The results confirm that slightly biasing the model towards hard examples improves robustness at a slight (albeit noticeable) drop in MNLI accuracy. 
+Our best model is obtained by using the BiLSTM forgettable examples (line 9) achieving an accuracy of 74.0\% on HANS (max over 3 seeds, mean 73.7\% $\pm$ 0.5\%)
+which constitutes a +15.7\% absolute improvement with respect to the base model in line 1 and +4.8\% and +7.5\% with respect to the concurrent models of \newcite{clark2019dont} and \newcite{mahabadi2019simple}. 
 Results on line 10 confirm that the forgettable subsets of examples identified by BiLSTM is responsible for the improvement. 
-Fine-tuning on BoW forgettables (line 11) is also comparable to BiLSTM forgettables (line 9). This shows that the choice of the weak model 
-does not seem to matter and therefore does not need prior knowledge about the dataset biases.
-An additional interesting observation is that BERT forgettables provide less improvement in robustness than BiLSTM or BoW. 
-This seems to align with our hypothesis that weaker baselines capture more simple explanations in the dataset.
+Fine-tuning on BoW forgettables (line 11) is also comparable to BiLSTM forgettables (line 9).
+% This shows that the choice of the weak model does not seem to matter and therefore prior knowledge about the dataset biases is not required.
+An additional observation is that BERT forgettables provide less improvement in robustness than BiLSTM or BoW. 
+We hypothesize that this is due to the smaller size of the BERT forgettables compared to BiLSTM or Bow.
+% This seems to align with our hypothesis that weaker baselines capture simpler explanations in the dataset.
+
+We also show the detailed results of HANS based on its three different heuristics for our best performing model (line 9) in Appendix, Table \ref{tab:hans-detailed}. 
+Further to give an insight, we retrieve the nearest neighbors 
+of show an example in Appendix, Table \ref{tab:NNs}. 
 
 
 
+
+\paragraph{Robustness of larger models} 
+A growing body of literature suggests that increasing the capacity of deep networks results in better generalization~\newcite{belkin2018reconciling}. These results usually assume there is no distribution shift between train and test sets. We investigate whether robustness to the distribution shift studied in this paper may appear ``for free'' in models with a larger number of parameters. To that end, we apply our method to the ``large'' version of BERT, \bertlarge, which 
+achieves better performance in the MNLI dataset~\cite{devlin2018bert}. Results are shown in Table~\ref{tab:bertlarge}. We see that \bertlarge generalizes on HANS significantly better than \bertbase (72.3\% vs 58.3\%), confirming -- in this setting -- that larger models seem more robust. We also observe a +5\% increase in performance as a result of finetuning on forgettables from weaker models, supporting the applicability of the method to larger architectures.
 

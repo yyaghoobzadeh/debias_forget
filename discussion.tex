@@ -1,30 +1,5 @@
 
-In this paper, we introduced a novel approach based on example forgetting to build more robust NLU models.
-We put more weight on a set of forgettable examples by finetuning
-an already pretrained model only on those.
-We investigate different selections of the forgettable examples.
-
-We evaluated our approach on natural language inference task using  MNLI dataset and the evaluation set of HANS.
-HANS is designed to test the robustness of MNLI trained models 
-against some simple heuristics.
-Our experiments showed promising results. In particular, we improved the BERT performance
-on HANS dataset by more than 13\% absolute accuracy points.
-
-In future, we plan to extend this research in different directions.
-First, we want to analyze the forgetting examples more to understand their special properties.
-Second, to confirm the generalization of our approach, we will apply it on more NLU tasks.
-Finally, we will study more smooth reweighting of training examples.
-
-
-
-
-
-
-
-
-
-
-
+In this paper, we introduced a novel approach based on example forgetting to build more robust models for a natural language inference task. We  finetuned a pre-trained model on a set of ``hard'' examples selected by measuring ``example forgetting''~\citep{toneva2018empirical}. We evaluated the robustness of our approach by training exclusively using the MNLI dataset and the evaluating the model on the out-of-distribution test set of HANS~\citep{linzen2019right}. We improve \bertbase and \bertlarge performance on the challenging HANS test set by more than 15\% and 5\%, respectively. Although this paper focused on natural language inference, the method is widely applicable in other tasks and contexts. This constitutes one possible direction for future work. Moreover, we plan to analyze the forgettable examples more thoroughly to understand their special properties. Finally, we will study smoother re-weighting of the training examples and re-interpret the studied approach more formally in the context of importance weighted empirical risk minimization~\citep{sugiyama2007covariate}.
 
 % \item investigate differences between hard examples and most forgotten examples 
 %     \item smoothly integrate the finetuning phase by softly reweighting examples

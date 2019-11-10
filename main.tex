@@ -8,6 +8,8 @@
 \usepackage{latexsym}
 \usepackage{subcaption}
 \usepackage{url}
+\usepackage{stmaryrd}
+
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -27,7 +29,7 @@
 \hspace{1cm}\arabic{notecounter} $<<<$ ##1: ##2
 $>>>$\hspace{1cm}}}}}
 \enoteson
-
+\aclfinalcopy
 \newcommand\alex[1]{\textcolor{red}{Aless: #1}}
 \newcommand\remi[1]{\textcolor{green}{Remi: #1}}
 \newcommand\yado[1]{\textcolor{orange}{Yado: #1}}
@@ -37,8 +39,10 @@ $>>>$\hspace{1cm}}}}}
 \def\balancedbert{17,748}
 \def\balancedlstm{46,740}
 \def\balancedbow{63,390}
+\def\bertbase{BERT$_{\scriptsize \textrm{BASE}}$ }
+\def\bertlarge{BERT$_{\scriptsize \textrm{LARGE}}$ }
 
-\title{Robust Language Understanding Models \\ with Example Forgetting}
+\title{Robust Natural Language Inference Models \\ with Example Forgetting}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -50,7 +54,8 @@ $>>>$\hspace{1cm}}}}}
 
 \author{%
   Yadollah Yaghoobzadeh, Remi Tachet, T.J. Hazen, Alessandro Sordoni \\
-  Microsoft Research \\
+  Microsoft Research, Montr\'eal \\
+  \small \texttt{\{yayaghoo,retachet,tj.hazen,alsordon\}@microsoft.com}
   % examples of more authors
   % \And
   % Coauthor \\
@@ -79,7 +84,7 @@ $>>>$\hspace{1cm}}}}}
 \maketitle
 
 \begin{abstract}
-We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models. We analyze forgetting events for natural language inference task and provide evidence that examples that are most forgotten under simpler NLU models can be used to increase robustness of larger models such as the recently proposed BERT.  
+We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models in a natural language inference task (MNLI). We analyze forgetting events for natural language inference task. We provide evidence that examples that are most forgotten under simpler NLU models can be used to increase robustness of the recently proposed BERT model, measured by testing a MNLI trained model on HANS, a curated test set that exhibits a shift in distribution compared to the MNLI test set. Moreover, we show that, the ``large'' version of BERT is more robust than its ``base'' version but its robustness can still be improved with our approach.
 \end{abstract}
 
 \section{Introduction}
@@ -89,6 +94,7 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \input{method}
 
 \section{Evaluation}
+\label{sec:eval}
 \input{results}
 
 
@@ -116,90 +122,6 @@ We investigate whether example forgetting, a recently introduced measure of hard
 
 % https://microsoft-my.sharepoint.com/:x:/r/personal/yayaghoo_microsoft_com/_layouts/15/Doc.aspx?sourcedoc=%7B41975454-abff-488b-8f55-c550ad840d9f%7D&action=edit&activeCell=%27compare_baseModels%27!D9&wdInitialSession=c219a303-a524-465a-bdd6-28ac21d1312c&wdRldC=1
 
-% \documentclass{article} % For LaTeX2e
-% \usepackage{iclr2019_conference,times}
-
-% % Optional math commands from https://github.com/goodfeli/dlbook_notation.
-% \input{math_commands.tex}
-
-% \usepackage{hyperref}
-% \hypersetup{
-%     colorlinks=true,
-%     citecolor=black,
-%     linkcolor=black,
-%     filecolor=magenta,      
-%     urlcolor=cyan,
-% }
-% \usepackage{url}
-% \usepackage{caption}    
-% \usepackage{wrapfig}
-% \usepackage{subfig}
-% \usepackage{algorithm}
-% \usepackage[noend]{algpseudocode}
-% \usepackage{graphicx}
-% \usepackage{bbm}
-
-% \newcommand\alex[1]{\textcolor{red}{Aless: #1}}
-% \newcommand\remi[1]{\textcolor{green}{Remi: #1}}
-% \newcommand\yado[1]{\textcolor{orange}{M: #1}}
-
-% \title{Debiasing by Example Forgetting}
-
-% \author{Santa Klaus and His Dogs}
-
-% \newcommand{\fix}{\marginpar{FIX}}
-% \newcommand{\new}{\marginpar{NEW}}
-% \newcommand\blfootnote[1]{%
-%   \begingroup
-%   \renewcommand\thefootnote{}\footnote{#1}%
-%   \addtocounter{footnote}{-1}%
-%   \endgroup
-% }
-
-% \iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
-% \begin{document}
-
-% \maketitle
-
-% \begin{abstract}
-% \end{abstract}
-
-% \section{Introduction}
-% \input{intro}
-
-% \begin{itemize}
-%     \item what's the problem - copy from my mila - msr proposal here
-%     \item what's example forgetting - present the previous paper. say that we show that most forgotten examples correspond to atypical examples, those that may not be solved by simple input-output correlations maybe, that's what motivate us in our investigation
-%     \item state our goal here which is two-fold: 1) analyze whether forgetting events occur in mnli / squad ; 2) whether training only on forgotten could lead to more robust models , those relying less on spurious , more robust statistics .
-%     \item say that in the example forgetting paper , we didn't test generalization in the out of domain setting but only from the same distribution.
-%     \item hint at results and future work
-% \end{itemize}
-
-% \section{Methodology}
-
-% \section{Experiments}
-
-% \begin{itemize}
-%     \item forgetting statistics on MNLI for BOW, BiLSTM and BERT
-%     \item statistics of forgetting / unforgettable examples ; are they different ?
-%     \item training only on forgotten examples don't help
-%     \item finetune on forgotten examples help though
-% \end{itemize}
-
-% \begin{table}[h]
-%     \centering
-%     \begin{tabular}{l | l l}
-%         Model & \#forgettables\\
-%         \hline
-%         BoW & & \\
-%         BiLSTM & & \\
-%         BERT & & \\
-%     \end{tabular}
-%     \caption{Caption}
-%     \label{tab:my_label}
-% \end{table}
-
-
 % \begin{table}[h]
 %     \centering
 %     \begin{tabular}{l | l l}
@@ -222,14 +144,3 @@ We investigate whether example forgetting, a recently introduced measure of hard
 %     \label{tab:my_label}
 % \end{table}
 
-% \section{Discussion and Conclusion}
-
-% \bibliography{bibliography}
-% \bibliographystyle{iclr2019_conference}
-
-
-
-% \newpage
-% \include{supp}
-
-% \end{document}
