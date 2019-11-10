@@ -84,7 +84,7 @@ $>>>$\hspace{1cm}}}}}
 \maketitle
 
 \begin{abstract}
-We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models in a natural language inference task (MNLI). We analyze forgetting events for natural language inference task. We provide evidence that examples that are most forgotten under simpler NLU models can be used to increase robustness of the recently proposed BERT model, measured by testing a MNLI trained model on HANS, a curated test set that exhibits a shift in distribution compared to the MNLI test set. Moreover, we show that, the ``large'' version of BERT is more robust than its ``base'' version but its robustness can still be improved with our approach.
+We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models in a natural language inference task (MNLI). We analyze forgetting events for MNLI and provide evidence that forgettable examples under simpler models can be used to increase robustness of the recently proposed BERT model, measured by testing an MNLI trained model on HANS, a curated test set that exhibits a shift in distribution compared to the MNLI test set. Moreover, we show that, the ``large'' version of BERT is more robust than its ``base'' version but its robustness can still be improved with our approach.
 \end{abstract}
 
 \section{Introduction}
@@ -103,7 +103,6 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \input{analysis}
 \fi
 
-
 \section{Discussion and Conclusion}
 \input{discussion}
 
@@ -111,9 +110,9 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \bibliographystyle{acl_natbib}
 
 \appendix
-\section{Detailed results on HANS}
+% \section{Detailed results on HANS}
 \label{sec:detailedresults}
-\input{hans_detailed_results.tex}
+\input{hans_detailed_results}
 
 \end{document}
 

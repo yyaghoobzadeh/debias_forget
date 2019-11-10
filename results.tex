@@ -1,5 +1,6 @@
 \begin{table*}[ht]
-\caption{Results of \bertbase model trained on different sources of training examples. Line 1 replicates the original \bertbase result~\citep{devlin2018bert}.
+\caption{Results of \bertbase model trained on different sources of training examples. For each line, the accuracy of the corresponding model is shown on MNLI dev and HANS and the average of the two.  
+Line 1 replicates the original \bertbase result~\citep{devlin2018bert}.
 % We denote with $\Delta$ the absolute improvement with respect to the standard setting of fine-tuning on all the MNLI examples (first row). 
 Lines from 2 to 7 correspond to finetuning only on subsets of MNLI data. The third block of results (lines from 8 to 11) corresponds to first finetuning \bertbase on the entire MNLI data and then performing an additional finetuning stage on selected examples. We also compare performance to the recent baselines of \newcite{clark2019dont} (lines 12 to 14) and \newcite{mahabadi2019simple} (line 15). They obtain slightly higher results for their base model~\textrm{All} but our best model outperforms theirs.}
 \small
@@ -97,17 +98,17 @@ Results on line 10 confirm that the forgettable subsets of examples identified b
 Fine-tuning on BoW forgettables (line 11) is also comparable to BiLSTM forgettables (line 9).
 % This shows that the choice of the weak model does not seem to matter and therefore prior knowledge about the dataset biases is not required.
 An additional observation is that BERT forgettables provide less improvement in robustness than BiLSTM or BoW. 
-We hypothesize that this is due to the smaller size of the BERT forgettables compared to BiLSTM or Bow.
+We hypothesize that this is due to the smaller size of the BERT forgettables compared to BiLSTM or BoW.
 % This seems to align with our hypothesis that weaker baselines capture simpler explanations in the dataset.
 
 We also show the detailed results of HANS based on its three different heuristics for our best performing model (line 9) in Appendix, Table \ref{tab:hans-detailed}. 
 Further to give an insight, we retrieve the nearest neighbors 
-of show an example in Appendix, Table \ref{tab:NNs}. 
+a HANS example and show that in Appendix, Table \ref{tab:NNs}. 
 
 
 
 
 \paragraph{Robustness of larger models} 
-A growing body of literature suggests that increasing the capacity of deep networks results in better generalization~\newcite{belkin2018reconciling}. These results usually assume there is no distribution shift between train and test sets. We investigate whether robustness to the distribution shift studied in this paper may appear ``for free'' in models with a larger number of parameters. To that end, we apply our method to the ``large'' version of BERT, \bertlarge, which 
+A growing body of literature suggests that increasing the capacity of deep networks results in better generalization \cite{belkin2018reconciling}. These results usually assume there is no distribution shift between train and test sets. We investigate whether robustness to the distribution shift studied in this paper may appear ``for free'' in models with a larger number of parameters. To that end, we apply our method to the ``large'' version of BERT, \bertlarge, which 
 achieves better performance in the MNLI dataset~\cite{devlin2018bert}. Results are shown in Table~\ref{tab:bertlarge}. We see that \bertlarge generalizes on HANS significantly better than \bertbase (72.3\% vs 58.3\%), confirming -- in this setting -- that larger models seem more robust. We also observe a +5\% increase in performance as a result of finetuning on forgettables from weaker models, supporting the applicability of the method to larger architectures.
 
