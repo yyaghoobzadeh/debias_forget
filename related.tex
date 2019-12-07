@@ -14,3 +14,23 @@ A possible explanation for this phenomenon is a form of implicit regularization 
 %        \item 1999 https://arxiv.org/pdf/1106.0219.pdf identification of noisy labels , nice discussion about the difference between "noise" (to filter) and "exceptions" (to retain)
 % \end{itemize}
 % \end{itemize}
+
+
+\paragraph{Out-of-distribution evaluation datasets}
+Standard machine learning datasets splits examples in the same distribution into training and evaluation sets.
+In NLP as in other ML applications, to test if ML models generalize beyond their training distribution, a number of datasets have been introduced in recent years.
+The test sets are made either automatically using designed grammars \cite{linzen2019right}
+or by human annotators \cite{xyz}. 
+These datasets evaluate different aspects of generalization, e.g., covariate shift and label imbalance. 
+The performance of models on these out-of-distribution test sets usually is far from in-distribution test sets.
+
+\paragraph{Unsupervised generalization to out-of-distribution data}
+This has been studied within different areas of ML. 
+Domain adaptation techniques are trying to build more robust models against covariate shift.
+Unlabeled data from target domains might be used in these scenarios but there are also work 
+where there is no assumption about the target domain and the goal is to build a more general model which can work better for any unseen target domain. 
+Re-weighting training examples based on some criteria is a common approach to gain more generalization.
+This of course depends on our prior criteria for generalization in the task.
+In this work, we up-weight some training examples without depending on any priors about the task. 
+We up-weight examples where training model is uncertain about them during training, i.e., forgets them as training goes on.
+

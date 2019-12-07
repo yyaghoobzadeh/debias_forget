@@ -1,10 +1,33 @@
-% Paper-specific macros
 
+
+\newcounter{notecounter}
+
+\newcommand{\enotesoff}{\long\gdef\enote##1##2{}}
+\newcommand{\enoteson}{\long\gdef\enote##1##2{{
+\stepcounter{notecounter}
+{\large\bf
+\hspace{1cm}\arabic{notecounter} $<<<$ ##1: ##2
+$>>>$\hspace{1cm}}}}}
+\enoteson
+\newcommand\alex[1]{\textcolor{red}{Aless: #1}}
+\newcommand\remi[1]{\textcolor{green}{Remi: #1}}
+\newcommand\yado[1]{\textcolor{orange}{Yado: #1}}
+\newcommand\soroush[1]{\textcolor{cyan}{Srsh: #1}}
+
+\def\balancedbert{17,748}
+\def\balancedlstm{46,740}
+\def\balancedbow{63,390}
+\def\xlnetbase{XLNET$_{\scriptsize \textrm{BASE}}$ }
+\def\xlnetlarge{XLNET$_{\scriptsize \textrm{LARGE}}$ }
+\def\bertbase{BERT$_{\scriptsize \textrm{BASE}}$ }
+\def\bertlarge{BERT$_{\scriptsize \textrm{LARGE}}$ }
 %% Table
-\newcommand\ent{$E$\xspace}
-\newcommand\neu{$N$\xspace}
-\newcommand\con{$C$\xspace}
-\newcommand{\nent}{$\neg E$\xspace}
+\def\ent{$E$\xspace}
+\def\neu{$N$\xspace}
+\def\con{$C$\xspace}
+\def\nent{$\neg E$\xspace}
+\def\pph{$P$\xspace}
+\def\npph{$\neg P$\xspace}
 
 \newcommand{\bt}[2]{
 	\multicolumn{1}{r}{\cellcolor{cyan!#1}{#2}}

@@ -1,5 +1,5 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[hyperref]{acl2019}
+\usepackage[hyperref]{acl2020}
 \usepackage{times}  %Required
 \usepackage{helvet}  %Required
 \usepackage{courier}  %Required
@@ -9,7 +9,7 @@
 \usepackage{subcaption}
 \usepackage{url}
 \usepackage{stmaryrd}
-
+\usepackage{color}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -20,27 +20,11 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{multirow}
+\usepackage{amssymb}
+% \aclfinalcopy
 
-\newcounter{notecounter}
-\newcommand{\enotesoff}{\long\gdef\enote##1##2{}}
-\newcommand{\enoteson}{\long\gdef\enote##1##2{{
-\stepcounter{notecounter}
-{\large\bf
-\hspace{1cm}\arabic{notecounter} $<<<$ ##1: ##2
-$>>>$\hspace{1cm}}}}}
-\enoteson
-\aclfinalcopy
-\newcommand\alex[1]{\textcolor{red}{Aless: #1}}
-\newcommand\remi[1]{\textcolor{green}{Remi: #1}}
-\newcommand\yado[1]{\textcolor{orange}{Yado: #1}}
-
-% \input macros
-
-\def\balancedbert{17,748}
-\def\balancedlstm{46,740}
-\def\balancedbow{63,390}
-\def\bertbase{BERT$_{\scriptsize \textrm{BASE}}$ }
-\def\bertlarge{BERT$_{\scriptsize \textrm{LARGE}}$ }
+% Paper-specific macros
+\input{macros.tex}
 
 \title{Robust Natural Language Inference Models \\ with Example Forgetting}
 
@@ -52,39 +36,19 @@ $>>>$\hspace{1cm}}}}}
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-\author{%
-  Yadollah Yaghoobzadeh, Remi Tachet, T.J. Hazen, Alessandro Sordoni \\
-  Microsoft Research, Montr\'eal \\
-  \small \texttt{\{yayaghoo,retachet,tj.hazen,alsordon\}@microsoft.com}
+% \author{%
+%   Yadollah Yaghoobzadeh, Remi Tachet, T.J. Hazen, Alessandro Sordoni \\
+%   Microsoft Research, Montr\'eal \\
+%   \small \texttt{\{yayaghoo,retachet,tj.hazen,alsordon\}@microsoft.com}
   % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-}
+% }
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models in a natural language inference task (MNLI). We analyze forgetting events for MNLI and provide evidence that forgettable examples under simpler models can be used to increase robustness of the recently proposed BERT model, measured by testing an MNLI trained model on HANS, a curated test set that exhibits a shift in distribution compared to the MNLI test set. Moreover, we show that, the ``large'' version of BERT is more robust than its ``base'' version but its robustness can still be improved with our approach.
+We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models to distribution shifts in a natural language inference task (MNLI) and a paraphrase task (QQP). We analyze forgetting events for those two datasets and provide evidence that forgettable examples under simpler models can be used to increase robustness of the recently proposed BERT and XLNET models. More precisely, we test MNLI and QQP trained models on HANS and PAWS, two datasets with a challenging distributional shift compared to the original ones, and observe a significant improvement in their performance with our method. Moreover, we show that the \emph{large} versions of BERT and XLNET are more robust than their \emph{base} counterparts, indicating that increasing the number of parameters not only improves generalization but also robustness. Finally, applying our technique to the large models also results in an improved robustness.
 \end{abstract}
 
 \section{Introduction}
@@ -93,9 +57,14 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \section{Methodology}
 \input{method}
 
-\section{Evaluation}
+\section{Results}
 \label{sec:eval}
-\input{results}
+\subsection{MNLI and HANS}
+\input{results_hans.tex}
+
+\subsection{QQP and PAWS}
+\label{sec:paws}
+\input{paws.tex}
 
 
 \iffalse
@@ -106,6 +75,10 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \section{Discussion and Conclusion}
 \input{discussion}
 
+\section{Related Works}
+\input{related.tex}
+
+\clearpage
 \bibliography{bibliography}
 \bibliographystyle{acl_natbib}
 
@@ -113,6 +86,7 @@ We investigate whether example forgetting, a recently introduced measure of hard
 % \section{Detailed results on HANS}
 \label{sec:detailedresults}
 \input{hans_detailed_results}
+\input{paws_detailed_results}
 
 \end{document}
 

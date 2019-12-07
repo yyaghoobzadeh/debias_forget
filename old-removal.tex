@@ -205,3 +205,34 @@ an example.
 As it is shown, for the Lexical overlap, we do see supporting 
 training examples. }
 \end{table*}
+
+
+\iffalse
+\begin{table*}
+\caption{Stress test results}
+\small
+\label{tab:stress}
+\centering
+\begin{tabular}{ll llll | llll}
+& Train examples & \multicolumn{4}{c}{Negation} & \multicolumn{4}{c}{Overlap}\\
+& & E & C & N & Acc & E & C & N & ACC\\
+\hline
+\small{1} & All & 4.2 & 76.7 & 53.9 & 52.3 
+& 17.0 & 77.0 & 55.6 & 55.3\\
+
+\midrule
+&\emph{Additional stage of finetuning} \\
+\small{2} & All + finetuning on BiLSTM forgettables 
+& 15.9 & 76.4 & 54.7 & 54.1 
+& 23.6 & 76.8 & 55.6 & 56.2\\
+\hline [0.76047002 0.09225789 0.53914917]
+% &\emph{From~\cite{x}} & & & & \\
+% \small{10} & All & 2.4 & 81.1 & 56.5 & -
+% & 19.2 & 83.3 & 59.4 \\
+% \small{11} & DRiFt-HYPO & 7.3 & 80.7 & 55.6 & - & 27.5 & 81.1 & 59.1 \\
+% \small{12} & DRiFt-CBOW & 17.9 & 81.7 & 55.5 & - & 18.3 & 80.0 & 56.6 \\
+% \small{13} & DRiFt-HAND & 4.3 & 80.6 & 55.5 & - & 15.0 & 81.9 & 57.4
+
+\end{tabular}
+\end{table*}
+\fi

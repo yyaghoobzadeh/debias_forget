@@ -1,0 +1,76 @@
+% QQP (Quora question paraphrase) is a paraphrase detection dataset from Quora questions. 
+% Each question pair is labeled by either positive or negative. 
+% Performance of strong NLP models is very high on the evaluation sets from this data. 
+% Recently, PAWS is introduced \cite{zhang-etal-2019-paws} which is made using back translation and applying heuristics for cleanup. The word overlap in PAWS examples is significantly higher than QQP making it a challenging evaluation set for QQP models.
+% For example, the accuracy of BERT trained on QQP is drops from around 91\% to 32\%.
+
+In this section, we report the results of our method applied to QPP (see Section \ref{sec:dataset_qqp}).
+
+\paragraph{Forgetting Statistics} Table \ref{tab:forg_stats} contains the number of forgettable examples for our three defaults models. Interestingly, BiLSTM has more forgettables than BoW even though it reaches a better final performance. The distribution of forgetting events for each model can be found in the appendix, Figure \ref{fig:forgcount-freq-qqp}.
+
+\paragraph{Fine-Tuning on Forgettables} We assess the robustness of our fine-tuned models on PAWS. Results can be found in Table \ref{tab:paws}. \textcolor{red}{TO COMPLETE WITH FULL NUMBERS}. 
+
+\begin{table*}[ht]
+\small
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model}                           & \multicolumn{2}{c}{\textbf{QQP $\rightarrow$ QQP}} & \multicolumn{2}{c}{\textbf{QQP $\rightarrow$ PAWS}} &           \multicolumn{2}{c}{\textbf{Avg.}}         \\
+                                & Acc           & AUC          & Acc           & AUC          & Acc & AUC \\
+%\midrule
+%Random (p=0.3624)               & 50    & 58.96 & 56.60 & 41.77 & 53.30 & 50.365 \\
+%Random (p=0.5)                  & 49.79 & 62.23 & 50.52 & 46.67 & 50.16 & 54.45 \\
+%Random (p=0.6376)               & 50    & 66.04 & 43.40 & 50.68 & 46.70 & 58.36 \\
+\midrule
+% FROM PAWS PAPER, TABLE 7:
+\emph{From~\citet{zhang-etal-2019-paws}} \\
+BOW                                          & 83.2 & 89.5 & 29.0 & 27.1 & 56.1 & 58.3 \\
+BiLSTM                                       & 86.3 & 91.6 & 34.8 & 37.9 & 60.6 & 64.8 \\
+ESIM~\citep{chen-etal-2017-enhanced}         & 85.3 & 92.8 & 38.9 & 26.9 & 62.1 & 59.9 \\
+DecAtt~\citep{parikh-etal-2016-decomposable} & 87.8 & 93.9 & 33.3 & 26.3 & 60.6 & 60.1 \\
+DIIN~\citep{gong2017natural}                 & 89.2 & 95.2 & 32.8 & 32.4 & 61.0 & 63.8 \\
+BERT~\citep{devlin2018bert}                  & 90.5 & 96.3 & 33.5 & 35.1 & 62.0 & 65.7 \\
+\midrule
+\bertbase                       & 90.6 & 96.6 & 32.2 & 33.8 & 61.4 & 65.2 \\
+\bertbase + BOW forgettables    & 88.8 & 95.4 & 44.8 & 36.4 & 66.8 & 65.9 \\
+\bertbase + BiLSTM forgettables & 88.2 & 95.2 & 41.9 & 37.2 & 65.1 & 66.2 \\
+\bertbase + BERT forgettables   & 87.7 & 95.2 & 48.4 & 34.4 & 68.1 & 64.8 \\
+\midrule
+\bertlarge                       & 91.1 & 96.9 & 34.6 & 35.1 & 62.9 & 66.0 \\
+\bertlarge + BiLSTM forgettables & 87.3 & 94.1 & 55.2 & 35.8 & 71.3 & 65.0 \\
+\midrule
+\xlnetbase                       & 90.9 & 96.6 & 36.6 & 37.5 & 63.8 & 67.1 \\
+\xlnetbase + BOW forgettables    & 88.5 & 95.1 & 52.9 & 39.3 & 70.1 & 67.2 \\
+\xlnetbase + BiLSTM forgettables & 87.9 & 95.0 & 49.5 & 40.5 & 68.7 & 67.8 \\
+\xlnetbase + BERT forgettables   & 88.6 & 95.2 & 60.4 & 38.1 & 74.5 & 66.6 \\
+\midrule
+\xlnetlarge                       & {91.6} & 97.0   & 49.6 & 43.4 & 70.6 & 70.2 \\
+\xlnetlarge + BOW forgettables    & 87.2 & 93 & 68.9 & 50.1 & 78.1 & 71.6\\
+\xlnetlarge + BiLSTM forgettables & 85.6 & 92.6 & 64.7 & 52.5 & 75.2 & 72.6\\
+\bottomrule
+\end{tabular}
+\caption{Accuracy (\%) and AUC score (\%) of precision-recall curves are reported for QQP test set and PAWS\textsubscript{QQP} development set. {QQP $\rightarrow$ PAWS} indicates training on QQP and evaluation on PAWS. Results of the \emph{base} and \emph{large} versions of various recent NLU models trained on different sources of training examples. \soroush{I put the 1st seed in this table for base mdoels.} }
+\label{tab:paws}
+\end{table*}
+
+\begin{table*}[]
+\small
+\centering
+\begin{tabular}{lccc|ccc}
+                                & \multicolumn{3}{c|}{\pph} & \multicolumn{3}{c}{\npph} \\
+
+                                & All    & High   & Low   & All     & High    & Low     \\
+\toprule
+
+All                       &    &    &   &     &     &     \\
+All + BiLSTM forgettables &    &    &   &     &     &     \\   
+\bottomrule
+\end{tabular}
+\caption{Fine-grained accuracy results of \bertbase on QQP dev set before and after finetuning on forgettables. 
+We split the evaluation set into High ($>$ mean) and Low ($<$ mean) word-overlap examples,
+where word-overlap is measures under Jaccard Index between two sentences. 
+%COPIED FROM TABLE 3 fine_mnli: Finetuning hurts \pph{} results in both High and Low but improves \npph{} on High.
+%This is in line with the fine-grained results of HANS depicted in Figure \ref{fig:fine_eval_baselines} where all examples have High word-overlap.
+}
+\label{fine_qqp}   
+\end{table*}
