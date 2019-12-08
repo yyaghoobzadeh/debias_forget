@@ -1,12 +1,11 @@
 
 % We aim to improve the robustness of BERT~\citep{devlin2018bert} when trained to solve a natural language inference task. Hereafter, we describe the dataset used for this task as well present our methodology.
-
 \subsection{Inference datasets: MNLI and HANS}
 \label{sec:dataset}
-The MNLI corpus~\citep{williams2017broad} is a popular NLU dataset containing premise/hypothesis pairs annotated with textual entailment information (neutral, entailment or contradiction). Multiple studies have hypothesized that deep learning models tend to capture simple heuristics from the MNLI training data, and do not build an actual understanding of the task. Over the years, a series of diagnostic datasets have been released to test these hypotheses.
+MNLI~\citep{williams2017broad} is a popular NLU dataset containing more than 400,000 premise/hypothesis pairs annotated with textual entailment information (neutral, entailment or contradiction). Multiple studies have hypothesized that deep learning models tend to capture simple heuristics from the MNLI training data, and do not build an actual understanding of the task. Over the years, a series of diagnostic datasets have been released to test these hypotheses.
 The most recent of these datasets, HANS~\citep[Heuristic Analysis for NLI Systems]{linzen2019right}, contains curated templates designed to test the robustness of a model against the following three heuristics for recognizing if a premise entails a hypothesis: lexical overlap (a premise entails any hypothesis built from of a subset of its words), subsequence (a premise entails any of its contiguous subsequences) and constituent (a premise entails all the complete subtrees in its parse tree). In particular, any model relying exclusively on those heuristics would not have a higher than chance classification accuracy on this test set.
 
-\citet{linzen2019right} show that a variety of existing models -- including BERT~\citep{devlin2018bert}, the state-of-the-art model at the time -- perform, overall, worse than chance on classification accuracy of HANS evaluation data. This confirms the hypothesis that models trained on MNLI data tend to learn the three aforementioned heuristics rather than actually understanding the task. To test our methodology, we thus make use of the HANS evaluation dataset, which contains 30,000 examples equally split between the two labels: ``entailment'' and ``non-entailment''.
+\citet{linzen2019right} show that a variety of existing models -- including BERT~\citep{devlin2018bert}, the state-of-the-art model at the time -- perform, overall, only slightly better than chance on classification accuracy of HANS evaluation data. This confirms the hypothesis that models trained on MNLI data tend to learn the three aforementioned heuristics rather than actually understanding the task. To test our methodology, we thus make use of the HANS evaluation dataset, which contains 30,000 examples equally split between the two labels: ``entailment'' and ``non-entailment''.\footnote{In HANS, ``contradicxtoin'' and ``neutral'' labels are combined into ``non-entailment''.}
 
 \subsection{Paraphrase datasets: QQP and PAWS}
 \label{sec:dataset_qqp}
@@ -18,7 +17,7 @@ The QQP corpus~\citep{qqp} is another widely used NLU dataset containing over 40
 
 We train two models, BoW and BiLSTM, as our weak baselines to compute forgetting statistics of different examples in the training set. We use the term \textit{weak} to emphasize the fact that those models have fewer parameters than the ones we will eventually consider (Section \ref{sec:strong}). Our conjecture is that networks with lower capacity will discover the samples that support the various heuristics described in Sections \ref{sec:dataset} and  \ref{sec:dataset_qqp}. In particular, \emph{forgettable} examples for those models will correspond to sentences that do not verify said heuristics.
 
-Both models are siamese networks, with similar input representations and classification layers.
+Both models are Siamese networks, with similar input representations and classification layers.
 For the input layer, we lower case and tokenize the inputs into words and initialize their representations with Glove, a 300 dimensional pretrained embedding~\citep{pennington2014glove}.
 For the classification task, from the premise and hypothesis vectors $p$ and $h$, we build the concatenated vector $s = [p, h, |p - h|, p \odot h]$ and pass it to a two-layer perceptron classifier. 
 To compute $p$ or $h$, the BoW model max-pools the bag of word embeddings,
@@ -26,7 +25,7 @@ while the BiLSTM model max-pools the top-layer hidden states of a 2-layer bidire
 
 \begin{table}[t]
 \footnotesize
-\caption{Number of ``forgettables'' examples (those that are forgotten at least once or never learned) during training along with the accuracy on the MNLI and QQP matched development sets.}
+\caption{Number of ``forgettable'' examples (those that are forgotten at least once or never learned) during training along with the accuracy on the MNLI matched development sets and QQP. }
 \label{tab:forg_stats}
 \centering
 \begin{tabular}{llccc}
@@ -63,14 +62,17 @@ In this work, we focus on BERT and XLNET, both the base and large versions, and 
 We train our two weak baselines and \bertbase on MNLI and QQP and track the number of times each example is forgotten, following the same procedure described in \citet{toneva2018empirical}. In short, an example is forgotten if it goes from being correctly to incorrectly classified during training (because of gradient updates performed on other examples). 
 
 If an example is forgotten at least once or is never learnt during training, we call it ``forgettable''. %TODO keep forgettable term consistent 
-In the following sections, we will consider the forgettable examples for the various models as new fine-tuning sets. In particular, to remove the effect of shifting label distributions, we randomly sample forgettable examples for each label to keep the label distributions of the forgettable sets identical to the ones of MNLI or QQP (i.e., 33\% from each of the three labels in MNLI and 36\% for the paraphrase label in QQP). The results below all make use of the balanced forgettable sets.
+In the following sections, we will consider the forgettable examples for the various models as new fine-tuning sets. In particular, to remove the effect of shifting label distributions, we randomly sample forgettable examples for each label to keep the label distributions uniform
+% of the forgettable sets identical to the ones of MNLI or QQP 
+(i.e., 33\% from each of the three labels in MNLI and 50\% for the paraphrase label in QQP). 
+The results below all make use of the balanced forgettable sets.
 
 
 \begin{figure}[t]
 \centering
   \includegraphics[width=0.45\textwidth]{figures/ex_by_forg.png}
-  \caption{Distribution of forgetting events for the three models after five training epochs. As can be seen, a majority of examples are not forgotten during training. We make use of examples 
-  with at least one forgetting event in our method for robust NLI models.}
+  \caption{Distribution of forgetting events in MNLI training set for the three models after five training epochs. As can be seen, a majority of examples are not forgotten during training. We make use of examples 
+  with at least one forgetting event in our method for robust models.}
 \label{fig:forgcount-freq}
 \end{figure}
 
@@ -102,12 +104,13 @@ In the following sections, we will consider the forgettable examples for the var
   \caption{Jaccard index between sets of words in Premise and Hypothesis for ``Forgettable'' examples.}
 \label{fig:wordoverlap-forg}
 \end{figure}
+
 \fi
 
 \begin{figure}[t]
 \centering
   \includegraphics[scale=0.45]{figures/jaccard_plot.pdf}
-  \caption{Word overlap between premise and hypothesis as measured by Jaccard similarity in both forgettables and unforgettables examples. For all models, forgettable (unforgettable) examples tend to contain contradiction (entailment) examples with higher than average (dashed line) word overlap which support their usefulness to unlearn the word overlap heuristic.}
+  \caption{Word overlap between premise and hypothesis as measured by Jaccard similarity in both forgettables and unforgettables examples. For all models, forgettable (unforgettable) examples tend to contain contradiction (entailment) examples with higher than average (dashed line) word overlap which support their usefulness to unlearn the word overlap heuristic. \yado{@Ale: Can you show non-entailment by avg contradiction with neutral numbers?}}
 \label{fig:wordoverlap-unforg}
 \end{figure}
 
@@ -115,30 +118,3 @@ In the following sections, we will consider the forgettable examples for the var
 \label{sec:fine_tune}
 We adopt a simple strategy to exploit the sets of forgettables computed by the baselines and BERT itself: we first fine-tune our main models on the whole dataset, to get a reasonable prior for the task. We then perform an additional stage of fine-tuning for $3$ epochs on a subset of the training set, composed of the forgettable examples from one of the considered models (i.e. from BoW, BiLSTM or BERT).
 
-\iffalse
-\subsection{Comparing our methodology to related work}
-\begin{itemize}
-    \item The recent work to tackle the brittleness of MNLI trained models all are built based on the prior knowledge about the biases
-    in the training dataset. 
-    
-    
-    Notably, \newcite{clark2019dont} introduce a 2 stage process as:
-\begin{quote}
-        (1)
-train a naive model that makes predictions exclusively based on dataset biases, and (2) train
-a robust model as part of an ensemble with the
-naive one in order to encourage it to focus on
-other patterns in the data that are more likely to
-generalize
-    \end{quote}
-    
-    \newcite{he2019unlearn} employs a similar approach and uses a bag-of-word, a hypotheis-only and a manually-built bias models, and fits 
-    their target model to the residual of these weak baselines.
-    
-    \newcite{mahabadi2019simple} takes a very similar approach as in \newcite{clark2019dont}.
-    
-    In compared to these methods, we do not rely on known biases and prior knowledge about the dataset.
-    We do however rely on weaker models to compute a more diverse set of forgettables.
-
-\end{itemize}
-\fi

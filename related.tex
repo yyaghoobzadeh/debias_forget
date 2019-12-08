@@ -34,3 +34,31 @@ This of course depends on our prior criteria for generalization in the task.
 In this work, we up-weight some training examples without depending on any priors about the task. 
 We up-weight examples where training model is uncertain about them during training, i.e., forgets them as training goes on.
 
+
+\iffalse
+\subsection{Comparing our methodology to related work}
+\begin{itemize}
+    \item The recent work to tackle the brittleness of MNLI trained models all are built based on the prior knowledge about the biases
+    in the training dataset. 
+    
+    
+    Notably, \newcite{clark2019dont} introduce a 2 stage process as:
+\begin{quote}
+        (1)
+train a naive model that makes predictions exclusively based on dataset biases, and (2) train
+a robust model as part of an ensemble with the
+naive one in order to encourage it to focus on
+other patterns in the data that are more likely to
+generalize
+    \end{quote}
+    
+    \newcite{he2019unlearn} employs a similar approach and uses a bag-of-word, a hypotheis-only and a manually-built bias models, and fits 
+    their target model to the residual of these weak baselines.
+    
+    \newcite{mahabadi2019simple} takes a very similar approach as in \newcite{clark2019dont}.
+    
+    In compared to these methods, we do not rely on known biases and prior knowledge about the dataset.
+    We do however rely on weaker models to compute a more diverse set of forgettables.
+
+\end{itemize}
+\fi
