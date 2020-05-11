@@ -1,9 +1,77 @@
 
-\paragraph{Curriculum Learning and Sample Weighting}
-Curriculum learning is a paradigm that favors learning along a curriculum of examples of increasing difficulty~\citep{bengio2009curriculum}. This general idea has found success in a variety of areas since its introduction~\citep{Kumar10,lee2011learning,schaul2015prioritized}.~\citet{Kumar10} implemented their curriculum by considering easy the examples with a small loss. In our experiments, we empirically validate that unforgettable examples can be safely removed without compromising generalization.~\citet{Zhao2015,conf/icml/KatharopoulosF18} relate sample importance to the norm of its loss gradient with respect to the parameters of the network.~\citet{Fan2017,screenerNet,jiang18mentor} learn a curriculum directly from data in order to minimize the task loss.~\citet{jiang18mentor} also study the robustness of their method in the context of noisy examples. This relates to a rich literature on outlier detection and removal of examples with noisy labels~\citep{john1995robust,brodley1999identifying,sukhbaatar2014training,jiang18mentor}. We will provide evidence that noisy examples rank higher in terms of number of forgetting events. \cite{conf/icml/KohL17} borrow influence functions from robust statistics to evaluate the impact of the training examples on a model's predictions.
 
-\paragraph{Deep Generalization} The study of the generalization properties of deep neural networks when trained by stochastic gradient descent has been the focus of several recent publications~\citep{zhang2016understanding, keskar2016large, Chaudhari2016,Advani2017HighdimensionalDO}. These studies suggest that the generalization error does not depend solely on the complexity of the hypothesis space. For instance, it has been demonstrated that over-parameterized models with many more parameters than training points can still achieve low test error~\citep{huang2017densely,Wang2018} while being complex enough to fit a dataset with completely random labels~\citep{zhang2016understanding}.
-A possible explanation for this phenomenon is a form of implicit regularization performed by stochastic gradient descent: deep neural networks trained with SGD have been recently shown to converge to the maximum margin solution in the linearly separable case~\citep{Soudry2017,separable2}. In our work, we provide empirical evidence that generalization can be maintained when removing a substantial portion of the training examples and without restricting the complexity of the hypothesis class. This goes along the support vector interpretation provided by \citet{Soudry2017}.
+% \paragraph{Out-of-distribution generalization}
+% Recently, generalization to distributions other than the training one has become increasingly important, notably for real-world applications of NLP, vision, and ML in general. A growing body of literature focuses on the subject and shows that such generalization is far from being attained, even in seemingly simple cases. For instance, evidence exists that NLP models may not be robust when tested on examples obtained by applying basic meaning-preserving transformations such as passivization \cite{dasgupta2018evaluating}. As pointed out by~\citet{mitchell2018extrapolation}, NLP models should ``embody the symmetries that allow the same meaning to be expressed within multiple grammatical structures''. However, it is not the case, in particular, they do not learn~\emph{compositionality} rules \cite{montague1970universal},~i.e. how to compose smaller chunks into larger units of meaning, which has been linked to their poor systematic generalization capabilities \cite{loula2018rearranging,lake2017generalization,baan2019realization,hupkes2018learning}.
+% While this might seem at odds with the common belief that high-level semantic representations of the input data are formed \cite{bengio2009learning}, the reliance on highly predictive but brittle features is not confined to NLU tasks. It is also a perceived shortcoming of image classification models \cite{brendel2019approximating,geirhos2018imagenet,jacobsen2018excessive}.
+
+\paragraph{Out-of-distribution generalization}
+% Recently, generalization to distributions other than the training one has become increasingly important, notably for real-world applications of NLP, vision, and ML in general.
+A growing body of literature recently focused on out-of-domain generalization showing that such generalization is far from being attained, even in seemingly simple cases~\citep{geirhos2018imagenet,jia2017adversarial,dasgupta2018evaluating}. In particular, and in contrast with what ~\citet{mitchell2018extrapolation} recommend, NLP models do not seem to ``embody the symmetries that allow the same meaning to be expressed within multiple grammatical structures''. Supervised models seem to exhibit poor systematic generalization capabilities \cite{loula2018rearranging,lake2017generalization,baan2019realization,hupkes2018learning} thus seemingly lacking~\emph{compositional} behavior~\citep{montague1970universal}. While this might seem at odds with the common belief that high-level semantic representations of the input data are formed \cite{bengio2009learning}, the reliance on highly predictive but brittle features is not confined to NLU tasks. It is also a perceived shortcoming of image classification models \cite{geirhos2018imagenet,jacobsen2018excessive,brendel2019approximating}.
+% Standard machine learning datasets are usually built by splitting a set of examples coming from the same distribution into a training and an evaluation set~\citep{mnist}.
+In order to test systematically if machine learning models generalize beyond their training distribution, a number of datasets have been introduced in NLP and other ML applications~\cite{journals/cmig/Kalpathy-CramerHDABM15,peng2018moment,clark2019dont}.
+Those test sets can be made automatically from designed grammars \cite{linzen2019right} and/or by human annotators~\cite{zhang-etal-2019-paws}. % Model performance on these out-of-distribution test sets is usually far below that on the training distribution. 
+
+% They evaluate different aspects of generalization, e.g., covariate shift, label imbalance, etc.
+
+\paragraph{Dataset re-weighting} Dataset re-sampling and weighting techniques have been studied in order to solve class imbalance problem~\cite{chawla2002smote} or covariate shift~\cite{sugiyama2007covariate}, notably by importance weighted empirical risk minimization. However, evidence exists that up-weighting hard examples may be dangerous in the presence of outliers or noise \cite{chapelle2007training,Kumar10,toneva2018empirical}.
+In an NLP setting, \citet{clark2019dont,mahabadi2019simple} give evidence of the effectiveness of re-weighting training examples for increasing robustness. They generally assume~\emph{a priori} knowledge of the heuristics present in the dataset, and up/down-weight examples with respect to those heuristics. A relevant recent attempt at achieving robust learning when multiple ``views'' of the same training data are available can be found in \newcite{arjovsky2019invariant}.
+Dataset sampling is also a trademark of curriculum learning, where training proceeds along a curriculum of samples with increasing difficulty~\citep{bengio2009curriculum}. \citet{Kumar10,lee2011learning,schaul2015prioritized,Zhao2015,Fan2017,conf/icml/KatharopoulosF18,screenerNet,jiang18mentor} have shown the concept can be quite successful in a variety of areas.
+
+\paragraph{Unsupervised domain adaptation}
+Unsupervised domain adaptation and generalization are examples works focused on transferring knowledge from a labeled source domain to an unlabeled target domain. Theoretical results~\citep{ben2010theory,mansour2012robust,conf/icml/0002CZG19} and algorithms~\citep{glorot2011domain,becker2013non,adel2017unsupervised,pei2018multi} under those settings are abundant. In NLP, \citet{jia2017adversarial} is of particular relevance.
+``Our work is more related to distributionally robust optimization 
+(Duchi and Namkoong, 2018; Hu et al., 2018) and the more recent group-DRO which does not assume access to target data and optimizes the worst-case performance under unknown, bounded distribution shift.''
+
+
+AFLITE~\citep{bras2020adversarial} is an algorithmic method for bias removal in datasets without relying on prior knowledge about dataset. It filters out examples with high average predictability score, relating them to points with spurious biases. The resulting subset of 
+examples is used as unbiased training data and shown to improve o.o.d performance across several benchmarks including HANS compared to training on full dataset. 
+However, it harms the performance on in-distribution significantly and
+acts as adversary to that. 
+Our approach is designed to increase robustness to o.o.d while still keeping
+in-distribution performance high. We do not filter out easy examples,
+but down-weight them.
+Other bias removal methods introduced for NLI are all based on strong 
+domain and dataset assumptions. The bias-only models are 
+designed specifically for each of the o.o.d or diagnostic tasks.
+This means we need to know in advance about the evaluation distribution,
+which is not ideally the case commonly.
+In addition, all of these methods including AFLITE add new hyperparamters
+like example weights or threshold of predictability 
+that they need to tune in order to get their good peroramance.
+Our method doesn't rely on any prior knowledge, and doesn't introduce any
+new hyperparamter. 
+\newcite{min2020syntactic} use syntactic tranformation of some training examples to augment training set and show it is 
+effective to improve HANS.
+
+
+\newcite{} suggest the term \emph{shortcut learning} to cover different 
+terms in this domain. 
+There are common features in the data that models learn to do the task which are not intended by humans designing the task.
+Learning of these features is a shortcut to perform the task, which
+doesn't generalizes to o.o.d.
+Another relatod work is algorithmic \textbf{fairness}
+which is related to learning biased solutions. 
+We also observe in NLI  the existence of biases 
+towards head groups of examples and debiasing hurts the head group results. 
+
+
+
+
+% This has been studied within different areas of ML. 
+% Domain adaptation techniques are trying to build more robust models against covariate shift.
+% Unlabeled data from target domains might be used in these scenarios but there are also work 
+% where there is no assumption about the target domain and the goal is to build a more general model which can work better for any unseen target domain. 
+% Re-weighting training examples based on some criteria is a common approach to gain more generalization.
+% This of course depends on our prior criteria for generalization in the task.
+% In this work, we up-weight some training examples without depending on any priors about the task. 
+% We up-weight examples where training model is uncertain about them during training, i.e., forgets them as training goes on.
+
+% \paragraph{Sample Re-Weighting and Curriculum Learning}
+% Recently, \newcite{clark2019dont,mahabadi2019simple} give evidence towards the effectiveness of re-weighting training examples for increasing robustness but they  generally assume~\emph{a priori} knowledge of the heuristics present in the dataset. 
+% In the curriculum learning framework, training proceeds along a curriculum of training samples with increasing difficulty~\citep{bengio2009curriculum}. Since then, \citep{Kumar10,lee2011learning,schaul2015prioritized} have shown the concept can be quite successful in a variety of areas. For example, \citet{Kumar10} built a curriculum by labelling as easy the examples with a small loss. \citet{Zhao2015,conf/icml/KatharopoulosF18} relate the sample importance to the gradient norm of its loss with respect to the parameters of the network. \citet{Fan2017,screenerNet,jiang18mentor} learn a curriculum directly from data in order to minimize the task loss. \citet{jiang18mentor} also study the robustness of their method in the context of noisy examples. This relates to a rich literature on outlier detection and removal of examples with noisy labels~\citep{john1995robust,brodley1999identifying,sukhbaatar2014training,jiang18mentor}. We will provide evidence that noisy examples rank higher in terms of number of forgetting events. \cite{conf/icml/KohL17} borrow influence functions from robust statistics to evaluate the impact of the training examples on a model's predictions.
+
+% \paragraph{Deep Generalization} The study of the generalization properties of deep neural networks when trained by stochastic gradient descent has been the focus of several recent publications~\citep{zhang2016understanding, keskar2016large, Chaudhari2016,Advani2017HighdimensionalDO}. These studies suggest that the generalization error does not depend solely on the complexity of the hypothesis space. For instance, it has been demonstrated that over-parameterized models with many more parameters than training points can still achieve low test error~\citep{huang2017densely,Wang2018} while being complex enough to fit a dataset with completely random labels~\citep{zhang2016understanding}.
+% A possible explanation for this phenomenon is a form of implicit regularization performed by stochastic gradient descent: deep neural networks trained with SGD have been recently shown to converge to the maximum margin solution in the linearly separable case~\citep{Soudry2017,separable2}. In our work, we provide empirical evidence that generalization can be maintained when removing a substantial portion of the training examples and without restricting the complexity of the hypothesis class. This goes along the support vector interpretation provided by \citet{Soudry2017}.
 
 % \paragraph{Continual Learning} \alex{If Maryia get good results, dump some stuff on continual learning, we'd need also to change the intro to make it a bit more concrete!}.
 
@@ -14,25 +82,6 @@ A possible explanation for this phenomenon is a form of implicit regularization 
 %        \item 1999 https://arxiv.org/pdf/1106.0219.pdf identification of noisy labels , nice discussion about the difference between "noise" (to filter) and "exceptions" (to retain)
 % \end{itemize}
 % \end{itemize}
-
-
-\paragraph{Out-of-distribution evaluation datasets}
-Standard machine learning datasets splits examples in the same distribution into training and evaluation sets.
-In NLP as in other ML applications, to test if ML models generalize beyond their training distribution, a number of datasets have been introduced in recent years.
-The test sets are made either automatically using designed grammars \cite{linzen2019right}
-or by human annotators \cite{xyz}. 
-These datasets evaluate different aspects of generalization, e.g., covariate shift and label imbalance. 
-The performance of models on these out-of-distribution test sets usually is far from in-distribution test sets.
-
-\paragraph{Unsupervised generalization to out-of-distribution data}
-This has been studied within different areas of ML. 
-Domain adaptation techniques are trying to build more robust models against covariate shift.
-Unlabeled data from target domains might be used in these scenarios but there are also work 
-where there is no assumption about the target domain and the goal is to build a more general model which can work better for any unseen target domain. 
-Re-weighting training examples based on some criteria is a common approach to gain more generalization.
-This of course depends on our prior criteria for generalization in the task.
-In this work, we up-weight some training examples without depending on any priors about the task. 
-We up-weight examples where training model is uncertain about them during training, i.e., forgets them as training goes on.
 
 
 \iffalse

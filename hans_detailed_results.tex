@@ -22,7 +22,7 @@
 \emph{Gates and Appiah were thanked for opening the door.} \\
 \bottomrule
 \end{tabular}
-\caption{Two nearest neighbors for one HANS non-entailment ($\longarrownot\longrightarrow$)  example show-casing how our robust model (line 5 in Table 2) pushes supporting $\longarrownot\longrightarrow$ training data closer compared to standard BERT (MNLI). 
+\caption{Two nearest neighbors for one HANS non-entailment ($\longarrownot\longrightarrow$)  example show-casing how our robust model (line 10 in Table 2) pushes supporting $\longarrownot\longrightarrow$ training data closer compared to standard BERT (MNLI). 
 To compute nearest neighbors from the BERT models, the embedding  of the special token (CLS) is assumed as the representation of an example and cosine is used as the similarity metric.}
 \label{tab:NNs}
 \end{table*}
@@ -68,10 +68,34 @@ label: \ent
 \end{tabular}
 \\
 \end{tabular}
-\caption{Two nearest neighbors for one HANS non-entailment (\nent{})  example show-casing how our robust model (line 5 in Table 2) pushes supporting \nent{} training data closer compared to standard BERT (MNLI). 
+\caption{Two nearest neighbors for one HANS non-entailment (\nent{})  example show-casing how our robust model (line 10 in Table 2) pushes supporting \nent{} training data closer compared to standard BERT (MNLI). 
 To compute nearest neighbors from the BERT models, the embedding 
 of the special token (CLS) is assumed as the representation of
 an example and cosine is used as the similarity metric.}
 \label{tab:NNs}
 \end{table*}
 \fi
+
+
+\begin{table*}[]
+\small
+\centering
+\begin{tabular}{lccccccc}
+    & \multicolumn{3}{c}{\textbf{Paraphrase}} & & \multicolumn{3}{c}{\textbf{Non-Paraphrase}} \\
+
+                            Model    & \emph{All}    & \emph{High}   & \emph{Low}   & & \emph{All}     & \emph{High}    & \emph{Low}     \\
+\toprule
+
+BERT                       & \textbf{90.0} & \textbf{90.8} & \textbf{88.9} &  & 92.2 & 85.6 & 95.0 \\
+BERT + \flstm & 85.2 & 84.9 & 85.8 &  & \textbf{93.0} & \textbf{87.3} & \textbf{95.4} \\   
+BERT + \fbow    & 87.3 & 87.2 & 87.4 &  & 92.6 & 86.4 & 95.2 \\   
+\bottomrule
+\end{tabular}
+\caption{Fine-grained accuracy results of BERT on QQP development set before and after finetuning on forgettables. 
+We split the evaluation set into High ($>$ mean) and Low ($<$ mean) word-overlap examples,
+where word-overlap is measures under Jaccard Index between two sentences. Similar observations than in the case of MNLI hold.
+%COPIED FROM TABLE 3 fine_mnli: Finetuning hurts \pph{} results in both High and Low but improves \npph{} on High.
+%This is in line with the fine-grained results of HANS depicted in Figure \ref{fig:fine_eval_baselines} where all examples have High word-overlap.
+}
+\label{fine_qqp}   
+\end{table*}

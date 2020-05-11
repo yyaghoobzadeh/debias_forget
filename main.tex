@@ -26,15 +26,10 @@
 % Paper-specific macros
 \input{macros.tex}
 
-\title{Robust Natural Language Inference Models \\ with Example Forgetting}
+\title{Up-weighting Forgettable Examples \\ for Down-weighting
+Syntactic Inference Heuristics}
 
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to LaTeX to determine where to break the
-% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
-% \AND instead of \And before the third author name.
+
 
 % \author{%
 %   Yadollah Yaghoobzadeh, Remi Tachet, T.J. Hazen, Alessandro Sordoni \\
@@ -48,14 +43,40 @@
 \maketitle
 
 \begin{abstract}
-We investigate whether example forgetting, a recently introduced measure of hardness of examples, can be used to select training examples in order to increase robustness of natural language understanding models to distribution shifts in a natural language inference task (MNLI) and a paraphrase task (QQP). We analyze forgetting events for those two datasets and provide evidence that forgettable examples under simpler models can be used to increase robustness of the recently proposed BERT and XLNET models. More precisely, we test MNLI and QQP trained models on HANS and PAWS, two datasets with a challenging distributional shift compared to the original ones, and observe a significant improvement in their performance with our method. Moreover, we show that the \emph{large} versions of BERT and XLNET are more robust than their \emph{base} counterparts, indicating that increasing the number of parameters not only improves generalization but also robustness. Finally, applying our technique to the large models also results in an improved robustness.
+It is known now that there are heuristics 
+models rely on when learning inference rules
+from textual data. 
+We propose a simple approach to increase robustness of strong natural language inference models against some frequent heuristics in the datasets.
+We find a set of hard training examples, either by the target model itself or by a more simple one, and upweight them. 
+To upweight, after training on the full dataset, we  fine-tune on the hard set only.
+For selecting hard sets, we propose using forgettable
+examples, i.e., examples that are learned and then forgotten
+during training or never learned. 
+This method is simple and effective while does not rely on prior knowledge of
+the heuristics. 
+On challenging evaluation datasets of HANS and PAWS designed to test syntactic heuristics learned by
+models, we observe significant improvements in out-of-distribution generalization learning from
+MNLI and QQP  datasets.
+In addition, we make several novel findings about the performance in this setting, e.g.,
+models with more parameters 
+are more robust; longer training
+results in more robustness; there is large correlation
+between hardness and premise-hypothesis word overlap; it is important to include the hard examples at the beginning of the training.
+
+
 \end{abstract}
 
 \section{Introduction}
+
 \input{intro}
 
-\section{Methodology}
+\section{Robustness against common syntactic heuristics}
 \input{method}
+
+\section{Experimental setup}
+\label{seupt}
+\input{exp_setup}
+
 
 \section{Results}
 \label{sec:eval}
@@ -66,28 +87,27 @@ We investigate whether example forgetting, a recently introduced measure of hard
 \label{sec:paws}
 \input{paws.tex}
 
+\subsection{FEVER}
+\label{sec:fever}
+\input{fever.tex}
 
-\iffalse
 \section{Analysis}
 \input{analysis}
-\fi
-
-\section{Discussion and Conclusion}
-\input{discussion}
 
 \section{Related Works}
 \input{related.tex}
 
-\clearpage
+\section{Discussion and Conclusion}
+\input{discussion}
+
 \bibliography{bibliography}
 \bibliographystyle{acl_natbib}
 
 \appendix
-% \section{Detailed results on HANS}
-\label{sec:detailedresults}
+\label{sec:appendix}
 \input{hans_detailed_results}
 \input{paws_detailed_results}
-
+\input{appendix}
 \end{document}
 
 %TODO:

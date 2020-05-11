@@ -1,0 +1,41 @@
+
+
+\begin{table}[]
+\small
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{R1}&  \textbf{R2} &  \textbf{R3}\\
+\toprule
+% BERT-base-uncased &  43.7 & 45.5 \\
+BERT & 47.3 & 45.6 & 46.1 \\
+BERT +\fbow & 47.4 & 45.8 & 46.7\\
+BERT +\flstm & 47.5 & 45.8 & 46.5\\
+\midrule
+XLNet         & 50.5 & 46.2 \\
+XLNet + \fbow & 51.5 & 46.6\\ 
+\midrule
+\xlnetlarge         & 59.1 \\
+\xlnetlarge + \fbow & 59.3 \\ 
+\bottomrule
+\end{tabular}
+\caption{Trained on MNLI, then trained on Anli, test on Anli dev}
+\label{tab:anli}   
+\end{table}
+
+\begin{table*}[]
+\small
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Model} & \multicolumn{2}{c}{\textbf{PAWS}} & &  ANLI-R1\\
+& \emph{Acc}    & \emph{AUC}  & &  \emph{Acc} & \\
+\midrule
+BERT &  33.2 & 34.9 && 30.9 & \\
+BERT +\fbow & 54.8 & 36.1 &&  31.9\\
+BERT +\flstm & 51.2 & 34.8 && 32.4\\
+\bottomrule
+\end{tabular}
+\caption{Train on MNLI test on X.}
+\label{tab:transfer_mnli}   
+\end{table*}

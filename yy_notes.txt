@@ -1,0 +1,120 @@
+
+Apr 29:
+- our findings: 
++ longer training -> better results on Hans, with growth happening after the first epoch. 
++ finetuning on forgettables improves Hans results degrading mnli slightly
++ the forg size is an optimum for hard set (!)
++ stronger models have much better Hans performance. 
++ training on bert-forg doesn't generalize at all. 
++ initial bert has good or even better AUC on Hans
++ 
+
+Apr 28:
+- even using bert-forg can give 83 and 69 results. 
+- if the base model's hans result is too good, then
+finetuning doesn't help as much and hurts mnli more as well.
+
+
+Apr 25: 
+- no improvements on counterfactual and mnli-matched-hard (hypothesis based) at all. 
+- finetuning on all Forg retains the mnli perf better since entailment acc is higher. 
+- no improvements from confidence penalty (using entropy maximization). 
+- can we stabilize bert results on Hans while keeping MNLI dev results the same, using only Bert?
+
+
+For HANS, there are supporting examples in training data
+and if the model predicts them correctly (classification acc=1),
+then it will do well on HANS too.
+Our forgetting set comes from those supporting samples (non-entailment and high-wordoverlap). 
+
+
+
+
+- possible next analysis: 
+ + analyze hard/easy generalization (e.g., hard->easy, hard->hard)
+ + does features from hard examples really more robust and transferable to easy ones?
+ + break down the word-overlap results to the 3 labels instead of ent and non-ent
+
+- alternative story:
+    + we define hard vs easy examples in training set using 
+    different criteria, e.g., loss of target or simpler models, dynamic of training (forgettables), predictablity scores
+    + we show the effect of upweighting hard examples on 
+      out-of-domain and in-domain generalization
+
+
+- adversarial filter paper: they show that by filtering into a special training subset,
+we can increase robustness of Roberta, e.g,  on mnli-> hans, diagnostics, stress tests, and ANLI. 
+(BUT IS THAT REALLY ROBUST?)
+
+- we need to understand why (E, low-overlap) gets worse by our method and
+does it hold for all the models and methods? in that case, are
+we actually improving robustness?
+
+- analyzing the diff between forgettables and high-loss examples. 
+Does training only on high-loss set results in similar randomness as
+forgettables?
+
+- try new models: Electra (its base gets 88% MNLI dev acc), Roberta, Turing-NLR.  
+
+- logic dataset to see if models forget easy patterns.
+
+
+--- 
+analysis of logits of Hans:
+For finetuned model on Bow forgettables (Hans 73% acc),
+ipdb> np.percentile(ent_probs[ent_probs < 0.5], 50)
+0.3549734652042389
+the median of 
+
+
+
+old notes:
+
+
+\subsection{Properties of the forgettables}
+Based on the results, we have:
+
+\begin{itemize}
+    \item A subset of training examples for a specific model 
+     in a specific training setting
+     \item The model either learns and then forget them during training at least once, or never leans them.
+     \item If we start from a (particaially) randomly initialized model and train it only on the forgettables, the model does not generalize; in fact it performs worse than chance on the test examples.
+    \item If we start from a pretrained model for the task, and finetune it on
+    the forgettables, the model does better on HANS and worse on original test set.
+    \item It is better if we pick the set of forgettables from a model with weaker architecture.
+    \item Only around 50\% of BERT forgettables are forgettable by BiLSTM -- again showing that forgettables are model dependent. 
+    
+\end{itemize}
+
+Some other hypothesis:
+\begin{itemize}
+    \item X is in F if there is a training example with different label but similar input feature. This is in fact
+    similarly true for HANS examples: there are non-entailment examples with high word overlap, while there are many 
+    examples in training set of MNLI with close input feature but entailment as label.
+    \item the easy rules in U do not generalize to F or F is a set of outliers -- model does not learn a rule from them. 
+    This is hypothesized by the poor results of models trained only on their Fs. However, eliminating these outliers hurt the model
+    performance. 
+    
+\end{itemize}
+
+\iffalse
+\subsection{Nearest neighbors}
+We take the embedding of CLS in BERT as the representation of an example. 
+In BERT models, this embedding is fed to a linear classifier and optimized by cross entropy loss. 
+Here, we find and look into the k-NNs of training examples for understanding what model is actually learning. 
+\fi
+
+
+\subsection{Remaining questions}
+\begin{enumerate}
+    \item How do our experiments align with the main findings of \newcite{toneva2018empirical} about
+    forgettable and unforgettable examples in some image classifcation datasets:
+    \begin{quote}
+        a) there exist a large number of unforgettable examples, i.e.,
+examples that are never forgotten once learnt, those examples are stable across seeds and strongly
+correlated from one neural architecture to another; b) examples with noisy labels are among the most
+forgotten examples, along with images with “uncommon” features, visually complicated to classify;
+c) training a neural network on a dataset where a very large fraction of the least forgotten examples
+have been removed still results in extremely competitive performance on the test set
+    \end{quote}
+\end{enumerate}

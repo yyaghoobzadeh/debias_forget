@@ -1,0 +1,24 @@
+
+In this section, we report the results of our method applied to FEVER.
+
+\begin{table*}[ht]
+\small
+\centering
+\begin{tabular}{llcccc}
+\toprule
+& \textbf{Model} & \multicolumn{1}{c}{\textbf{FEVER-Dev}} & \multicolumn{1}{c}{\textbf{Symm-v1}} &          
+\multicolumn{1}{c}{\textbf{Symm-v2}} \\
+\midrule
+\small{1} & \bertbase & 85.6$_{\pm 0.6}$ & 55.9$_{\pm 1.0}$ & 62.0$_{\pm 1.1}$ \\
+\small{2} &\bertbase + \fbow & 85.5$_{\pm 0.4}$ & 59.2$_{\pm 1.1}$ & 64.4$_{\pm 1.1}$\\
+\small{3} &\bertbase + \flstm                 \\
+\midrule
+ & From \citet{utama2020mind} \\
+\small{4} & \bertbase & 85.8$_{\pm 0.1}$ & 57.9$_{\pm 1.1}$ & 64.4$_{\pm 0.6}$\\
+\small{5} & Reweighting$_{\mbox{\tiny{bigrams}}}$  & 85.5$_{\pm 0.3}$ & 61.7$_{\pm 1.1}$ & 66.5$_{\pm 1.3}$\\
+\small{6} & Regularized-conf$_{\mbox{\tiny{claim}}}$ &  86.4$_{\pm 0.2}$ & 60.5$_{\pm 0.4}$& 66.2$_{\pm 0.6}$\\
+\bottomrule
+\end{tabular}
+\caption{}
+\label{tab:fever}
+\end{table*}

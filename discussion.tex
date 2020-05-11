@@ -1,9 +1,37 @@
+In this paper, we introduce a novel approach based on example forgetting to build more robust models for natural language inference tasks. Via example forgetting, we build a set of hard examples on which a pre-trained MNLI or QQP  model is fine-tuned. When evaluated on the HANS and PAWS out-of-distribution test sets, BERT and XLNET models show a consistent improvement in robustness. We also prove that the larger versions both outperform the base ones and additionally benefit from our method. We discuss next various open questions left for future work.
 
-In this paper, we introduced a novel approach based on example forgetting to build more robust models for a natural language inference task. We  finetuned a pre-trained model on a set of ``hard'' examples selected by measuring ``example forgetting''~\citep{toneva2018empirical}. We evaluated the robustness of our approach by training exclusively using the MNLI dataset and the evaluating the model on the out-of-distribution test set of HANS~\citep{linzen2019right}. We improve \bertbase and \bertlarge performance on the challenging HANS test set by more than 15\% and 5\%, respectively. Although this paper focused on natural language inference, the method is widely applicable in other tasks and contexts. This constitutes one possible direction for future work. Moreover, we plan to analyze the forgettable examples more thoroughly to understand their special properties. Finally, we will study smoother re-weighting of the training examples and re-interpret the studied approach more formally in the context of importance weighted empirical risk minimization~\citep{sugiyama2007covariate}.
+The abysmal performance of BERT on the MNLI validation set when trained exclusively on its own forgettable examples suggests that \fbert has interesting characteristics. In particular, we highlight the fact that those same examples provide useful learning signal for improving HANS performance when used as an additional fine-tuning stage, but seem to completely lead the model astray when used as the sole training source. This indicates complex interactions between training examples, as well as intricate learning dynamics, which could be better understood using recent advances in deep learning theory, in particular the recent kernel view on deep networks~\citep{jacot2018neural}.
+
+% Fourth, the fact that training on the whole dataset prior to fine-tuning is required (vs simply training on the forgettables) indicates complex interactions between training examples, as well as intricate learning dynamics. Recent advances in deep learning theory, in particular the recent kernel view on deep networks, could help understand our observations better.
+
+% More generally, studying in depth the various forgetting sets might lead to interesting insights.
+
+% Second, while this paper focuses on natural language inference, we conjecture that the method could be applicable to other tasks. A possibility is to test the method on a reading comprehension task such as SQuAD~\cite{rajpurkar2016squad} and tested on adversarial SQuAD~\cite{jia2017adversarial}. 
+
+The experiments showed that our robustness gains are accompanied by a drop in performance on MNLI and QQP.  Although out-of-distribution gains outweigh in-distribution losses (e.g. +12.5\% vs \mbox{-1.9\%} for BERT + \fbow on HANS and MNLI respectively), % but still worth significant attention.
+this apparent trade-off seems to be at odds with the goal of simultaneously achieving generalization improvements in- and out-of-distribution. One potential mitigation solution could be to use more sophisticated curriculum learning approaches: smoother ordering of examples, revisiting and/or up-weighting forgettables during training, as is done e.g. in~\citet{clark2019dont,he2019unlearn}. It is however unclear what the limits of this approach are. A future direction would also study the approach more formally in the context of importance weighted empirical risk minimization~\citep{sugiyama2007covariate}.
+
+Finally, we showed that in the considered tasks, larger models are more robust. A related question is to understand why XLNET outperforms BERT on HANS quite significantly. Is it a consequence of the different losses, training data, both?
+
+% current dataset cannot cover well all the modes of the natural lanaguage entailment distribution. under-represented modes, rare events
+% fine-tuning on hard BERT and getting better robustness IS a contribution
+
+% Finally, we will study smoother re-weighting of the training examples .
+
+% In this paper, we introduced a novel approach based on example forgetting to build more robust models for a natural language inference task. We  fine-tuned a pre-trained model on a set of ``hard'' examples selected by measuring ``example forgetting''~\citep{toneva2018empirical}. We evaluated the robustness of our approach by training exclusively using the MNLI dataset and the evaluating the model on the out-of-distribution test set of HANS~\citep{linzen2019right}. We improve \bertbase and \bertlarge performance on the challenging HANS test set by more than 15\% and 5\%, respectively. Although this paper focused on natural language inference, the method is widely applicable in other tasks and contexts. This constitutes one possible direction for future work. Moreover, we plan to analyze the forgettable examples more thoroughly to understand their special properties. Finally, we will study smoother re-weighting of the training examples and re-interpret the studied approach more formally in the context of importance weighted empirical risk minimization~\citep{sugiyama2007covariate}.
 
 % \item investigate differences between hard examples and most forgotten examples 
-%     \item smoothly integrate the finetuning phase by softly reweighting examples
+%     \item smoothly integrate the fine-tuning phase by softly reweighting examples
 %     \item compute more explicit measures of correlation between forgettables and the biases
-%     \item understand why BERT forgettables suck.
+
 %     \item can we even learn to avoid biases if no example contain counter examples of those biases ? put this in discussion
-% \end{itemize}
+
+% XLNET vs BERT is it data ? is it the loss ? these questions should be put in discussion
+% Drop in MNLI to comment
+% understand why BERT forgettables suck.
+% what's the tradeoff between MNLI generalization performance and out-of-distribution performance ?
+% current dataset cannot cover well all the modes of the natural lanaguage entailment distribution. under-represented modes, rare events
+% Just FORG does not work, the combination ALL + FORG does. Interesting in itself, hard to explain, avenue for future research
+% fine-tuning on hard BERT and getting better robustness IS a contribution
+
+
